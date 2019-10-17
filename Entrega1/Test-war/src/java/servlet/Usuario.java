@@ -8,6 +8,7 @@ package servlet;
 import ejb.despliegue.CompUsuariosFacadeLocal;
 import java.io.IOException;
 import javax.ejb.EJB;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -35,7 +36,12 @@ public class Usuario extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        System.out.println(bean.getNIF(null));
+        bean.controlAcceso(null, null, null);
+        bean.getNIF(null);
+        bean.bloquedo(null);
+        bean.getLicencias(null);
+        RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/index.jsp");
+        dispatcher.forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
