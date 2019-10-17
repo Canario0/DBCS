@@ -5,8 +5,11 @@
  */
 package ejb.despliegue;
 
+import ejb.dominio.Usuario;
+import ejb.persistencia.UsuarioFacadeLocal;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
 /**
@@ -15,12 +18,39 @@ import javax.ejb.Stateless;
  */
 @Stateless
 public class CompUsuariosFacade implements CompUsuariosFacadeLocal {
-    
+
     private final static Logger LOGGER = Logger.getLogger(CompUsuariosFacade.class.getName());
+
+    @EJB
+    private UsuarioFacadeLocal usuarioFacade;
 
     public boolean controlAcceso(String nombre, String clave, String tipoUsuario) {
         LOGGER.log(Level.INFO, "Llamada a controlAcceso");
-        return true;
+
+        Boolean valid = false;
+        if (nombre == null || clave == null || tipoUsuario == null) {
+            return valid;
+        }
+        Usuario usuario = usuarioFacade.findByUsuarioAndClave(nombre, clave);
+        if (usuario == null) {
+            return valid;
+        }
+        switch (tipoUsuario.toLowerCase()) {
+            case "empleado":
+                if (usuario.getEmpleado() != null) {
+                    valid = true;
+                }
+                break;
+            case "cliente":
+                if (usuario.getCliente() != null) {
+                    valid = true;
+                }
+                break;
+            default:
+                valid = false;
+                break;
+        }
+        return valid;
     }
 
     public String getNIF(String nombre) {

@@ -36,7 +36,7 @@ public class Usuario extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        bean.controlAcceso(null, null, null);
+        System.out.println(bean.controlAcceso("Adrmart", "123456", "cliente"));
         bean.getNIF(null);
         bean.bloquedo(null);
         bean.getLicencias(null);
