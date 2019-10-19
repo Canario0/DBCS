@@ -38,7 +38,10 @@ public class Usuario extends HttpServlet {
             throws ServletException, IOException {
         System.out.println(bean.controlAcceso("Adrmart", "123456", "cliente"));
         bean.getNIF(null);
-        bean.bloquedo(null);
+        System.out.println(bean.bloquedo("71151298Q"));
+        System.out.println(bean.bloquedo("71173624D"));
+        System.out.println(bean.bloquedo(null));
+        System.out.println(bean.bloquedo("71568294F"));
         bean.getLicencias(null);
         RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/index.jsp");
         dispatcher.forward(request, response);

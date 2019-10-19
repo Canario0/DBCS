@@ -5,7 +5,9 @@
  */
 package ejb.despliegue;
 
+import ejb.dominio.Cliente;
 import ejb.dominio.Usuario;
+import ejb.persistencia.ClienteFacadeLocal;
 import ejb.persistencia.UsuarioFacadeLocal;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -23,6 +25,8 @@ public class CompUsuariosFacade implements CompUsuariosFacadeLocal {
 
     @EJB
     private UsuarioFacadeLocal usuarioFacade;
+    @EJB
+    private ClienteFacadeLocal clienteFacade;
 
     public boolean controlAcceso(String nombre, String clave, String tipoUsuario) {
         LOGGER.log(Level.INFO, "Llamada a controlAcceso");
@@ -60,7 +64,15 @@ public class CompUsuariosFacade implements CompUsuariosFacadeLocal {
 
     public char bloquedo(String NIF) {
         LOGGER.log(Level.INFO, "Llamada a bloqueado");
-        return 'T';
+        if(NIF == null){
+            return 'E';
+        }
+        Cliente cliente = clienteFacade.find(NIF);
+        if (cliente == null) {
+            return 'E';
+        }
+        return cliente.getBloqueado();
+
     }
 
     public String[] getLicencias(String NIF) {
