@@ -23,7 +23,7 @@ public interface CompUsuariosFacadeLocal {
      * @return true si los datos de acesso son correctos, false en caso
      * contrario.
      */
-    boolean controlAcceso(String nombre, String clave, String tipoUsuario);
+    boolean controlAccesos(String nombre, String clave, String tipoUsuario);
 
     /**
      * Retorna el nif the un usuario
@@ -40,7 +40,7 @@ public interface CompUsuariosFacadeLocal {
      * @return T si está bloqueado, F si no lo está en caso de error retornará
      * E.
      */
-    char bloquedo(String NIF);
+    char bloqueado(String NIF);
 
     /**
      * Obtener licencias que tiene asociada un usuario.

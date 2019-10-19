@@ -10,7 +10,6 @@ import ejb.dominio.Tipocarnet;
 import ejb.dominio.Usuario;
 import ejb.persistencia.ClienteFacadeLocal;
 import ejb.persistencia.UsuarioFacadeLocal;
-import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
@@ -30,7 +29,7 @@ public class CompUsuariosFacade implements CompUsuariosFacadeLocal {
     @EJB
     private ClienteFacadeLocal clienteFacade;
 
-    public boolean controlAcceso(String nombre, String clave, String tipoUsuario) {
+    public boolean controlAccesos(String nombre, String clave, String tipoUsuario) {
         LOGGER.log(Level.INFO, "Llamada a controlAcceso");
 
         Boolean valid = false;
@@ -64,7 +63,7 @@ public class CompUsuariosFacade implements CompUsuariosFacadeLocal {
         return "SSSS";
     }
 
-    public char bloquedo(String NIF) {
+    public char bloqueado(String NIF) {
         LOGGER.log(Level.INFO, "Llamada a bloqueado");
         if (NIF == null) {
             return 'E';
