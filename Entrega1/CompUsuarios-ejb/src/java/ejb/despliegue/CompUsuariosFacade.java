@@ -6,9 +6,11 @@
 package ejb.despliegue;
 
 import ejb.dominio.Cliente;
+import ejb.dominio.Tipocarnet;
 import ejb.dominio.Usuario;
 import ejb.persistencia.ClienteFacadeLocal;
 import ejb.persistencia.UsuarioFacadeLocal;
+import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
@@ -64,7 +66,7 @@ public class CompUsuariosFacade implements CompUsuariosFacadeLocal {
 
     public char bloquedo(String NIF) {
         LOGGER.log(Level.INFO, "Llamada a bloqueado");
-        if(NIF == null){
+        if (NIF == null) {
             return 'E';
         }
         Cliente cliente = clienteFacade.find(NIF);
@@ -77,6 +79,14 @@ public class CompUsuariosFacade implements CompUsuariosFacadeLocal {
 
     public String[] getLicencias(String NIF) {
         LOGGER.log(Level.INFO, "Llamada a getLicencias");
-        return null;
+        if (NIF == null) {
+            return null;
+        }
+        Cliente cliente = clienteFacade.find(NIF);
+        if (cliente == null) {
+            return null;
+        }
+        // Tipocarnet::getTipo es lo mismo que hacer x -> x.getTypo y String[]::new es lo mismo que hacer size -> new String[size]
+        return cliente.getTipocarnetList().stream().map(Tipocarnet::getTipo).toArray(String[]::new);
     }
 }

@@ -7,6 +7,7 @@ package servlet;
 
 import ejb.despliegue.CompUsuariosFacadeLocal;
 import java.io.IOException;
+import java.util.Arrays;
 import javax.ejb.EJB;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -42,7 +43,7 @@ public class Usuario extends HttpServlet {
         System.out.println(bean.bloquedo("71173624D"));
         System.out.println(bean.bloquedo(null));
         System.out.println(bean.bloquedo("71568294F"));
-        bean.getLicencias(null);
+        System.out.println(Arrays.toString(bean.getLicencias("71151298Q")));
         RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/index.jsp");
         dispatcher.forward(request, response);
     }
