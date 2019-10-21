@@ -53,4 +53,21 @@ public class UsuarioFacade extends AbstractFacade<Usuario> implements UsuarioFac
             return null;
         }
     }
+    
+    public String findByUsuario(String nombre) {
+        Query query = getEntityManager().createNamedQuery("Usuario.findByNombre");
+        query.setParameter("nombre", nombre);
+        try {
+            Usuario user;
+            user = (Usuario) query.getSingleResult();
+            return user.getNif();
+        } catch (NoResultException e) {
+            return null;
+        } catch (NonUniqueResultException e) {
+            return null;
+        } catch (Exception e) {
+            LOGGER.log(Level.WARNING, e.toString());
+            return null;
+        }
+    }
 }

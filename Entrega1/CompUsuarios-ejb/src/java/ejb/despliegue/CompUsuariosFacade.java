@@ -60,7 +60,9 @@ public class CompUsuariosFacade implements CompUsuariosFacadeLocal {
 
     public String getNIF(String nombre) {
         LOGGER.log(Level.INFO, "Llamada a getNIF");
-        return "SSSS";
+        String nif = null;
+        nif = usuarioFacade.findByUsuario(nombre);
+        return nif;
     }
 
     public char bloqueado(String NIF) {

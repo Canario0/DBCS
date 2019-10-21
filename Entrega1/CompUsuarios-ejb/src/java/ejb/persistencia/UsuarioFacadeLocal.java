@@ -31,5 +31,7 @@ public interface UsuarioFacadeLocal {
     int count();
     
     Usuario findByUsuarioAndClave(String nombre, String password);
+
+    public String findByUsuario(String nombre);
     
 }

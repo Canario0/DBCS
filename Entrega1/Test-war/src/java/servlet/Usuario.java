@@ -38,7 +38,8 @@ public class Usuario extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         System.out.println(bean.controlAccesos("Adrmart", "123456", "cliente"));
-        bean.getNIF(null);
+        System.out.println(bean.getNIF("Adrmart"));
+        bean.getNIF("Adrmart33");
         System.out.println(bean.bloqueado("71151298Q"));
         System.out.println(bean.bloqueado("71173624D"));
         System.out.println(bean.bloqueado(null));
