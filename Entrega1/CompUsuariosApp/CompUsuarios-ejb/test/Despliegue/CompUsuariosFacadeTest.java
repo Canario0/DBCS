@@ -49,7 +49,7 @@ public class CompUsuariosFacadeTest {
         String clave = "Err";
         String tipoUsuario = "DaIgual";
         //EJBContainer container = javax.ejb.embeddable.EJBContainer.createEJBContainer();
-        CompUsuariosFacadeLocal instance = (CompUsuariosFacadeLocal)container.getContext().lookup("java:global/Entrega1/CompUsuarios-ejb/CompUsuariosFacade");
+        CompUsuariosFacadeLocal instance = (CompUsuariosFacadeLocal)container.getContext().lookup("java:global/classes/CompUsuariosFacade");
         Boolean expResult = false;
         Boolean result = instance.controlAccesos(nombre, clave, tipoUsuario);
         assertEquals(expResult, result);
@@ -66,7 +66,7 @@ public class CompUsuariosFacadeTest {
         String clave = "123456";
         String tipoUsuario = "empleado";
         //EJBContainer container = javax.ejb.embeddable.EJBContainer.createEJBContainer();
-        CompUsuariosFacadeLocal instance = (CompUsuariosFacadeLocal)container.getContext().lookup("java:global/Entrega1/CompUsuarios-ejb/CompUsuariosFacade");
+        CompUsuariosFacadeLocal instance = (CompUsuariosFacadeLocal)container.getContext().lookup("java:global/classes/CompUsuariosFacade");
         Boolean expResult = false;
         Boolean result = instance.controlAccesos(nombre, clave, tipoUsuario);
         assertEquals(expResult, result);
@@ -83,7 +83,7 @@ public class CompUsuariosFacadeTest {
         String clave = "123456";
         String tipoUsuario = "cliente";
         //EJBContainer container = javax.ejb.embeddable.EJBContainer.createEJBContainer();
-        CompUsuariosFacadeLocal instance = (CompUsuariosFacadeLocal)container.getContext().lookup("java:global/Entrega1/CompUsuarios-ejb/CompUsuariosFacade");
+        CompUsuariosFacadeLocal instance = (CompUsuariosFacadeLocal)container.getContext().lookup("java:global/classes/CompUsuariosFacade");
         Boolean expResult = true;
         Boolean result = instance.controlAccesos(nombre, clave, tipoUsuario);
         assertEquals(expResult, result);
@@ -102,7 +102,7 @@ public class CompUsuariosFacadeTest {
         System.out.println("getNIF No Existe");
         String nombre = "NoExiste";
         //EJBContainer container = javax.ejb.embeddable.EJBContainer.createEJBContainer();
-        CompUsuariosFacadeLocal instance = (CompUsuariosFacadeLocal)container.getContext().lookup("java:global/Entrega1/CompUsuarios-ejb/CompUsuariosFacade");
+        CompUsuariosFacadeLocal instance = (CompUsuariosFacadeLocal)container.getContext().lookup("java:global/classes/CompUsuariosFacade");
         String expResult = null;
         String result = instance.getNIF(nombre);
         assertEquals(expResult, result);
@@ -117,7 +117,7 @@ public class CompUsuariosFacadeTest {
         System.out.println("getNIF Existe");
         String nombre = "Adrmart";
         //EJBContainer container = javax.ejb.embeddable.EJBContainer.createEJBContainer();
-        CompUsuariosFacadeLocal instance = (CompUsuariosFacadeLocal)container.getContext().lookup("java:global/Entrega1/CompUsuarios-ejb/CompUsuariosFacade");
+        CompUsuariosFacadeLocal instance = (CompUsuariosFacadeLocal)container.getContext().lookup("java:global/classes/CompUsuariosFacade");
         String expResult = "12418684H";
         String result = instance.getNIF(nombre);
         assertEquals(expResult, result);
@@ -132,7 +132,7 @@ public class CompUsuariosFacadeTest {
         System.out.println("getLicencias Error");
         String NIF = "NoExiste";
         //EJBContainer container = javax.ejb.embeddable.EJBContainer.createEJBContainer();
-        CompUsuariosFacadeLocal instance = (CompUsuariosFacadeLocal)container.getContext().lookup("java:global/Entrega1/CompUsuarios-ejb/CompUsuariosFacade");
+        CompUsuariosFacadeLocal instance = (CompUsuariosFacadeLocal)container.getContext().lookup("java:global/classes/CompUsuariosFacade");
         String expResult = null;
         String[] result = instance.getLicencias(NIF);
         assertEquals(expResult, result);
@@ -147,7 +147,7 @@ public class CompUsuariosFacadeTest {
         System.out.println("getLicencias Sin Error");
         String NIF = "71151298Q";
         //EJBContainer container = javax.ejb.embeddable.EJBContainer.createEJBContainer();
-        CompUsuariosFacadeLocal instance = (CompUsuariosFacadeLocal)container.getContext().lookup("java:global/Entrega1/CompUsuarios-ejb/CompUsuariosFacade");
+        CompUsuariosFacadeLocal instance = (CompUsuariosFacadeLocal)container.getContext().lookup("java:global/classes/CompUsuariosFacade");
         String expResult = "C";
         String result = instance.getLicencias(NIF)[1];
         assertEquals(expResult, result);
@@ -162,7 +162,7 @@ public class CompUsuariosFacadeTest {
         System.out.println("Bloqueado Error en el NIF");
         String NIF = "NoExiste";
         //EJBContainer container = javax.ejb.embeddable.EJBContainer.createEJBContainer();
-        CompUsuariosFacadeLocal instance = (CompUsuariosFacadeLocal)container.getContext().lookup("java:global/Entrega1/CompUsuarios-ejb/CompUsuariosFacade");
+        CompUsuariosFacadeLocal instance = (CompUsuariosFacadeLocal)container.getContext().lookup("java:global/classes/CompUsuariosFacade");
         char expResult = 'E';
         char result = instance.bloqueado(NIF);
         assertEquals(expResult, result);
@@ -177,7 +177,7 @@ public class CompUsuariosFacadeTest {
         System.out.println("Bloqueado T");
         String NIF = "71151298Q";
         //EJBContainer container = javax.ejb.embeddable.EJBContainer.createEJBContainer();
-        CompUsuariosFacadeLocal instance = (CompUsuariosFacadeLocal)container.getContext().lookup("java:global/Entrega1/CompUsuarios-ejb/CompUsuariosFacade");
+        CompUsuariosFacadeLocal instance = (CompUsuariosFacadeLocal)container.getContext().lookup("java:global/classes/CompUsuariosFacade");
         char expResult = 'T';
         char result = instance.bloqueado(NIF);
         assertEquals(expResult, result);
@@ -192,7 +192,7 @@ public class CompUsuariosFacadeTest {
         System.out.println("Bloqueado T");
         String NIF = "12418684H";
         //EJBContainer container = javax.ejb.embeddable.EJBContainer.createEJBContainer();
-        CompUsuariosFacadeLocal instance = (CompUsuariosFacadeLocal)container.getContext().lookup("java:global/Entrega1/CompUsuarios-ejb/CompUsuariosFacade");
+        CompUsuariosFacadeLocal instance = (CompUsuariosFacadeLocal)container.getContext().lookup("java:global/classes/CompUsuariosFacade");
         char expResult = 'F';
         char result = instance.bloqueado(NIF);
         assertEquals(expResult, result);
