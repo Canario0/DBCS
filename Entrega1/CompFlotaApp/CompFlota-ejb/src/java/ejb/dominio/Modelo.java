@@ -12,8 +12,6 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -70,9 +68,8 @@ public class Modelo implements Serializable {
     private Character gps;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idmodelo")
     private List<Vehiculo> vehiculoList;
-    @JoinColumn(name = "IDMODELO", referencedColumnName = "IDMODELO")
-    @ManyToOne(optional = false)
-    private Licenciaspormodelo licenciapormodelo;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idmodelo")
+    private List<Licenciaspormodelo> licenciaspormodeloList;
 
     public Modelo() {
     }
@@ -148,12 +145,12 @@ public class Modelo implements Serializable {
     }
 
     @XmlTransient
-    public Licenciaspormodelo getLicenciapormodelo() {
-        return licenciapormodelo;
+    public List<Licenciaspormodelo> getLicenciaspormodeloList() {
+        return licenciaspormodeloList;
     }
 
-    public void setLicenciapormodelo(Licenciaspormodelo licenciapormodelo) {
-        this.licenciapormodelo = licenciapormodelo;
+    public void setLicenciaspormodeloList(List<Licenciaspormodelo> licenciaspormodeloList) {
+        this.licenciaspormodeloList = licenciaspormodeloList;
     }
 
     @Override

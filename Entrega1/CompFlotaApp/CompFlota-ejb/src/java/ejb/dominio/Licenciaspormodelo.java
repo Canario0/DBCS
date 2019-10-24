@@ -6,17 +6,16 @@
 package ejb.dominio;
 
 import java.io.Serializable;
-import java.util.List;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -37,8 +36,9 @@ public class Licenciaspormodelo implements Serializable {
     @Basic(optional = false)
     @Column(name = "ID")
     private Integer id;
-    @OneToMany( cascade = CascadeType.ALL, mappedBy = "idmodelo")
-    private List<Modelo> idmodeloList;
+    @JoinColumn(name = "IDMODELO", referencedColumnName = "IDMODELO")
+    @ManyToOne(optional = false)
+    private Modelo idmodelo;
 
     public Licenciaspormodelo() {
     }
@@ -55,12 +55,12 @@ public class Licenciaspormodelo implements Serializable {
         this.id = id;
     }
 
-    public List<Modelo> getIdmodelo() {
-        return idmodeloList;
+    public Modelo getIdmodelo() {
+        return idmodelo;
     }
 
-    public void setIdmodelo(List<Modelo> idmodeloList) {
-        this.idmodeloList = idmodeloList;
+    public void setIdmodelo(Modelo idmodelo) {
+        this.idmodelo = idmodelo;
     }
 
     @Override
