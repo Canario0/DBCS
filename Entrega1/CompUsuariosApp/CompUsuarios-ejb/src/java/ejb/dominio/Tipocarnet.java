@@ -6,7 +6,6 @@
 package ejb.dominio;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -64,7 +63,7 @@ public class Tipocarnet implements Serializable {
 
     @XmlTransient
     public List<Cliente> getClienteList() {
-        return new ArrayList<>(clienteList);
+        return clienteList;
     }
 
     public void setClienteList(List<Cliente> clienteList) {
