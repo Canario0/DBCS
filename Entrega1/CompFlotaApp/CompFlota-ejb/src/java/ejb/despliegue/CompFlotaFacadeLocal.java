@@ -15,6 +15,16 @@ import javax.ejb.Local;
 public interface CompFlotaFacadeLocal {
     
     /**
+     * Añade un vehículo al sistema
+     * @param idModelo
+     * @param matricula
+     * @param color
+     * @param km
+     * @param averiado
+     * @return 
+     */
+    boolean addVehiculo (String idModelo, String matricula, String color, float km, char averiado);
+    /**
      * Elimina un vhículo del sistema.
      *
      * @param matricula matrícula del vehículo que se quiere borrar.

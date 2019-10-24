@@ -5,12 +5,15 @@
  */
 package ejb.despliegue;
 
+import ejb.dominio.Modelo;
 import ejb.persistencia.VehiculoFacadeLocal;
 import ejb.dominio.Vehiculo;
+import ejb.persistencia.ModeloFacadeLocal;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import javax.persistence.EntityExistsException;
 
 /**
  *
@@ -23,6 +26,27 @@ public class CompFlotaFacade implements CompFlotaFacadeLocal {
 
     @EJB
     private VehiculoFacadeLocal vehiculoFacade;
+    @EJB
+    private ModeloFacadeLocal modeloFacade;
+
+    public boolean addVehiculo(String idModelo, String matricula, String color, float km, char averiado) {
+        LOGGER.log(Level.INFO, "Llamada a addVehiculo");
+        if (idModelo == null || idModelo.isEmpty() || matricula == null || matricula.isEmpty() || color == null || color.isEmpty() || km < 0 || (averiado != 'T' && averiado != 'F')) {
+            return false;
+        }
+        Modelo modelo = modeloFacade.find(idModelo);
+        if ( modelo == null) {
+            return false;
+        }
+        Vehiculo vehiculo = new Vehiculo(matricula, color, km, averiado);
+        vehiculo.setIdmodelo(modelo);
+        try{
+        vehiculoFacade.create(vehiculo);
+        }catch(EntityExistsException e){
+            return false;
+        }
+        return true;
+    }
 
     public boolean delVehiculo(String matricula) {
         LOGGER.log(Level.INFO, "Llamada a delVehiculo");
