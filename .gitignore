@@ -66,3 +66,9 @@ nbdist/
 .nb-gradle/
 
 # End of https://www.gitignore.io/api/java,macos,netbeans
+/CompFlotaApp/CompFlota-war/nbproject/private/
+/CompFlotaApp/CompFlota-ejb/nbproject/private/
+/CompUsuariosApp/CompUsuarios-ejb/nbproject/private/
+/CompUsuariosApp/Test-war/nbproject/private/
+/CompReservasAlquilerApp/CompReservasAlquiler-war/nbproject/private/
+/CompReservasAlquilerApp/CompReservasAlquiler-ejb/nbproject/private/
