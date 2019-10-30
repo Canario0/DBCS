@@ -6,6 +6,7 @@
 package ejb.persistencia;
 
 import ejb.dominio.Reserva;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.Local;
 
@@ -29,5 +30,9 @@ public interface ReservaFacadeLocal {
     List<Reserva> findRange(int[] range);
 
     int count();
+    
+    List<Reserva> findF(String nif);
+    
+    String[] findInDate(Date ini, Date fin);
     
 }

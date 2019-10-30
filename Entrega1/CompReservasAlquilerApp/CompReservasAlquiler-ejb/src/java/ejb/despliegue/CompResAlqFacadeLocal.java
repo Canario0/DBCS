@@ -5,6 +5,9 @@
  */
 package ejb.despliegue;
 
+import ejb.dominio.Reserva;
+import java.util.Date;
+import java.util.List;
 import javax.ejb.Local;
 
 /**
@@ -13,5 +16,11 @@ import javax.ejb.Local;
  */
 @Local
 public interface CompResAlqFacadeLocal {
+    
+    boolean addReserva(Date fechaInicio, Date fechaFin, String nif, String matricula);
+    List<Reserva> getReservasF(String nif);
+    boolean addAlquiler(int reserva, float km, String idEmpleado);
+    String[] getReservados(Date fechaInicial, Date fechaFinal);
+    
     
 }
