@@ -45,9 +45,9 @@ public class Alquiler extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, ParseException {
-        SimpleDateFormat sdf = new SimpleDateFormat("dd-M-yyyy");
-        String dateInString = "31-10-2019";
-        String dateInString2 = "02-11-2019";
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String dateInString = "2019-10-31";
+        String dateInString2 = "2019-11-02";
         Date date = sdf.parse(dateInString);
         Date date2 = sdf.parse(dateInString2);
         System.out.println(bean.addReserva(date,date2,"12418684H","1234ZZZ"));
@@ -57,13 +57,10 @@ public class Alquiler extends HttpServlet {
         reservas.forEach(r -> System.out.println(r.toString()));
         
         System.out.println(bean.addAlquiler(4, 2000, "1"));
-        
-        String dateInString3 = "20-12-2018";
-        String dateInString4 = "04-07-2019";
-        Date date3 = sdf.parse(dateInString3);
-        Date date4 = sdf.parse(dateInString4);
-        String[] reservados = bean.getReservados(date3, date4);
-        System.out.println(Arrays.toString(reservados));
+
+
+        String[] reservados = bean.getReservados(date, date2);
+        System.out.println("Cosa"+ Arrays.toString(reservados));
         
         RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/index.jsp");
         dispatcher.forward(request, response);
