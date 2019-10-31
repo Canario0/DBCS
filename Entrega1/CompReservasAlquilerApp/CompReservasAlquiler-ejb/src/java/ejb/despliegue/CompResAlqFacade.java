@@ -24,7 +24,7 @@ import javax.ejb.Stateless;
  * @author ivan
  */
 @Stateless
-public class CompResAlqFacade implements CompResAlqFacadeLocal {
+public class CompResAlqFacade implements CompResAlqFacadeRemote {
 
     @EJB
     private AlquilerFacadeLocal alquilerFacade;
