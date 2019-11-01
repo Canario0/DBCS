@@ -24,7 +24,7 @@ import javax.ejb.Stateless;
  * @author ivan
  */
 @Stateless
-public class CompResAlqFacade implements CompResAlqFacadeLocal {
+public class CompResAlqFacade implements CompResAlqFacadeRemote {
 
     @EJB
     private AlquilerFacadeLocal alquilerFacade;
@@ -35,16 +35,12 @@ public class CompResAlqFacade implements CompResAlqFacadeLocal {
     @Override
     public boolean addReserva(Date fechaInicio, Date fechaFin, String nif, String matricula) {
         if (fechaInicio == null || isDateValid(fechaInicio)) {
-            System.out.println("Falla en inicio");
             return false;
         } else if (fechaFin == null || isDateValid(fechaFin)) {
-            System.out.println("Falla en fin");
             return false;
         } else if (nif == null || "".equals(nif.trim())) {
-            System.out.println("Falla en nif");
             return false;
         } else if (matricula == null || "".equals(matricula.trim())) {
-            System.out.println("Falla en nif");
             return false;
         }
         Reserva r = new Reserva();
@@ -76,21 +72,16 @@ public class CompResAlqFacade implements CompResAlqFacadeLocal {
     @Override
     public boolean addAlquiler(int reserva, float km, String idEmpleado) {
         if (reserva <= 0) {
-            System.out.println("a");
             return false;
         } else if (km < 0) {
-            System.out.println("b");
             return false;
         } else if (idEmpleado == null || "".equals(idEmpleado.trim())) {
-            System.out.println("c");
             return false;
         }
         Reserva r = reservaFacade.find(reserva);
         if (r == null) {
-            System.out.println("d");
             return false;
         } else if (r.getEjecutada() == 'F') {
-            System.out.println("e");
             return false;
         }
         Alquiler a = new Alquiler();

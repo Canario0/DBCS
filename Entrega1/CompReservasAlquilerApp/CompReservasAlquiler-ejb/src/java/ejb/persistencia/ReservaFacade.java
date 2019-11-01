@@ -44,12 +44,20 @@ public class ReservaFacade extends AbstractFacade<Reserva> implements ReservaFac
     @Override
     public String[] findInDate(Date ini, Date fin) {
         Query query = getEntityManager().createNamedQuery("Reserva.findByRange");
+        query.setParameter("ejecutada",'F');
         query.setParameter("fechaInicio", ini);
         query.setParameter("fechaFinal", fin);
-        for( Object a : query.getResultList()){
-            System.out.println(((Reserva)a).toString());
+        List<String> reservas = query.getResultList();
+        if(reservas == null){
+            return null;
         }
-        return null;
+        
+        String[] matriculas = new String[reservas.size()];
+        for (int i = 0; i < reservas.size(); i++) {
+            matriculas[i] = reservas.get(i);
+        }
+        
+        return matriculas;
     }
 
 }
