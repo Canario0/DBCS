@@ -38,7 +38,6 @@ public class ReservaFacade extends AbstractFacade<Reserva> implements ReservaFac
         query.setParameter("ejecutada", 'F');
         query.setParameter("nif", nif);
         return query.getResultList();
-
     }
 
     @Override
@@ -51,12 +50,10 @@ public class ReservaFacade extends AbstractFacade<Reserva> implements ReservaFac
         if(reservas == null){
             return null;
         }
-        
         String[] matriculas = new String[reservas.size()];
         for (int i = 0; i < reservas.size(); i++) {
             matriculas[i] = reservas.get(i);
         }
-        
         return matriculas;
     }
 
