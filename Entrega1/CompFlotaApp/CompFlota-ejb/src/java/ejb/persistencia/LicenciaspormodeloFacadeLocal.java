@@ -6,6 +6,7 @@
 package ejb.persistencia;
 
 import ejb.dominio.Licenciaspormodelo;
+import ejb.dominio.Modelo;
 import java.util.List;
 import javax.ejb.Local;
 
@@ -29,5 +30,7 @@ public interface LicenciaspormodeloFacadeLocal {
     List<Licenciaspormodelo> findRange(int[] range);
 
     int count();
+    
+    List<String> findByIdModelo(Modelo idModelo);
     
 }

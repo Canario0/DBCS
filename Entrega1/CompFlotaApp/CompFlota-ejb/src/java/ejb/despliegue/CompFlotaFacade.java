@@ -5,10 +5,14 @@
  */
 package ejb.despliegue;
 
+import ejb.dominio.Licenciaspormodelo;
 import ejb.dominio.Modelo;
 import ejb.persistencia.VehiculoFacadeLocal;
 import ejb.dominio.Vehiculo;
+import ejb.persistencia.LicenciaspormodeloFacadeLocal;
 import ejb.persistencia.ModeloFacadeLocal;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
@@ -27,12 +31,58 @@ public class CompFlotaFacade implements CompFlotaFacadeLocal {
     private final static Logger LOGGER = Logger.getLogger(CompFlotaFacade.class.getName());
 
     @EJB
+    private CompResAlqFacadeRemote reservaAlquilerRemote;
+    @EJB
     private VehiculoFacadeLocal vehiculoFacade;
     @EJB
     private ModeloFacadeLocal modeloFacade;
+    @EJB
+    private LicenciaspormodeloFacadeLocal licenciaspormodeloFacade;
 
     public List<Vehiculo> getVehiculos(String[] licencias, Date fechaIni, Date fechaFin) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (licencias == null) {
+            return null;
+        } else if (fechaIni == null) {
+            return null;
+        } else if (fechaFin == null) {
+            return null;
+        }
+
+        List<Vehiculo> vehiculos = vehiculoFacade.findNotAveriado('F');
+        if (vehiculos == null) {
+            return null;
+        }
+
+        String[] reservados = reservaAlquilerRemote.getReservados(fechaIni, fechaFin);
+        if (reservados == null) {
+            return null;
+        }
+
+        String matricula = null;
+        List<Vehiculo> disponibles = new ArrayList<Vehiculo>();
+        List<String> reservadosList = Arrays.asList(reservados);
+        for (Vehiculo v : vehiculos) {
+            matricula = v.getMatricula();
+            if (!reservadosList.contains(matricula)) {
+                disponibles.add(v);
+            }
+        }
+
+        List<Vehiculo> result = new ArrayList<Vehiculo>();
+        List<String> idModelos;
+        List<String> licenciasList = Arrays.asList(licencias);
+        for (Vehiculo v : disponibles) {
+            idModelos = licenciaspormodeloFacade.findByIdModelo(v.getIdmodelo());
+            for (String m : idModelos) {
+                if (licenciasList.contains(m)) {
+                    result.add(v);
+                    break;
+                }
+            }
+        }
+
+        return result;
+
     }
 
     public boolean addVehiculo(String idModelo, String matricula, String color, float km, char averiado) {

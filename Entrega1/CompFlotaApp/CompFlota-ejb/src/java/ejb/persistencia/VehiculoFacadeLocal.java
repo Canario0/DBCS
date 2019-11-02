@@ -30,4 +30,6 @@ public interface VehiculoFacadeLocal {
 
     int count();
     
+    List<Vehiculo> findNotAveriado(char averiado);
+    
 }

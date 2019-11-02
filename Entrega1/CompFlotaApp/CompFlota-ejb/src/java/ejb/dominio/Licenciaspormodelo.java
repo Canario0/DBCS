@@ -17,6 +17,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -28,8 +30,14 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Licenciaspormodelo.findAll", query = "SELECT l FROM Licenciaspormodelo l"),
-    @NamedQuery(name = "Licenciaspormodelo.findById", query = "SELECT l FROM Licenciaspormodelo l WHERE l.id = :id")})
+    @NamedQuery(name = "Licenciaspormodelo.findById", query = "SELECT l FROM Licenciaspormodelo l WHERE l.id = :id"),
+    @NamedQuery(name = "Licenciaspormodelo.findLicenciaByModeloId", query = "SELECT l.tipo FROM Licenciaspormodelo l WHERE l.idmodelo = :idmodelo")})
 public class Licenciaspormodelo implements Serializable {
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 4)
+    @Column(name = "TIPO")
+    private String tipo;
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -86,6 +94,14 @@ public class Licenciaspormodelo implements Serializable {
     @Override
     public String toString() {
         return "ejb.dominio.Licenciaspormodelo[ id=" + id + " ]";
+    }
+
+    public String getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
     }
     
 }

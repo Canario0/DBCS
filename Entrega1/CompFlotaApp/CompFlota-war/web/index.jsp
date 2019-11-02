@@ -11,6 +11,8 @@ and open the template in the editor.
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
     <body>
-        <div>TODO write content</div>
+        <form method="POST" action="Flota">
+            <input type="submit">
+        </form>
     </body>
 </html>

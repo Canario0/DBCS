@@ -6,9 +6,12 @@
 package ejb.persistencia;
 
 import ejb.dominio.Licenciaspormodelo;
+import ejb.dominio.Modelo;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -26,6 +29,13 @@ public class LicenciaspormodeloFacade extends AbstractFacade<Licenciaspormodelo>
 
     public LicenciaspormodeloFacade() {
         super(Licenciaspormodelo.class);
+    }
+
+    @Override
+    public List<String> findByIdModelo(Modelo idModelo) {
+        Query query = getEntityManager().createNamedQuery("Licenciaspormodelo.findLicenciaByModeloId");
+        query.setParameter("idmodelo",idModelo);
+        return query.getResultList();
     }
     
 }

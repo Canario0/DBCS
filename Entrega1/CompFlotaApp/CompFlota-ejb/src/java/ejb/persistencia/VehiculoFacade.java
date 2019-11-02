@@ -6,9 +6,11 @@
 package ejb.persistencia;
 
 import ejb.dominio.Vehiculo;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -26,6 +28,12 @@ public class VehiculoFacade extends AbstractFacade<Vehiculo> implements Vehiculo
 
     public VehiculoFacade() {
         super(Vehiculo.class);
+    }
+
+    public List<Vehiculo> findNotAveriado(char averiado) {
+        Query query = getEntityManager().createNamedQuery("Vehiculo.findByAveriado");
+        query.setParameter("averiado", averiado);
+        return query.getResultList();
     }
     
 }
