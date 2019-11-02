@@ -32,7 +32,6 @@ public class CompResAlqFacade implements CompResAlqFacadeRemote {
     @EJB
     private ReservaFacadeLocal reservaFacade;
 
-    @Override
     public boolean addReserva(Date fechaInicio, Date fechaFin, String nif, String matricula) {
         if (fechaInicio == null || isDateValid(fechaInicio)) {
             return false;
@@ -51,25 +50,20 @@ public class CompResAlqFacade implements CompResAlqFacadeRemote {
         r.setNif(nif);
         r.setMatricula(matricula);
         r.setEjecutada('F');
-
         reservaFacade.create(r);
         if (reservaFacade.find(r.getIdreserva()) == null) {
             return false;
         }
-
         return true;
     }
 
-    @Override
     public List<Reserva> getReservasF(String nif) {
         if (nif == null || "".equals(nif.trim())) {
             return null;
         }
         return reservaFacade.findF(nif);
-
     }
 
-    @Override
     public boolean addAlquiler(int reserva, float km, String idEmpleado) {
         if (reserva <= 0) {
             return false;
@@ -81,28 +75,23 @@ public class CompResAlqFacade implements CompResAlqFacadeRemote {
         Reserva r = reservaFacade.find(reserva);
         if (r == null) {
             return false;
-        } else if (r.getEjecutada() == 'F') {
+        } else if (r.getEjecutada() == 'T') {
             return false;
         }
         Alquiler a = new Alquiler();
         a.setIdalquiler(alquilerFacade.count() + 1);
         a.setFechainicio(getToday());
-
         Date dt = getToday();
         Calendar c = Calendar.getInstance();
         c.setTime(dt);
         c.add(Calendar.DATE, 10);
         dt = c.getTime();
         a.setFechafin(dt);
-
         a.setKilometrajesalida(km);
         a.setCliente(r.getNif());
         a.setMatricula(r.getMatricula());
         a.setRealizadopor(idEmpleado);
-
         r.setEjecutada('T');
-
-        
         reservaFacade.edit(r);
         if(reservaFacade.find(r.getIdreserva()).getEjecutada() == 'F'){
             return false;
@@ -111,19 +100,15 @@ public class CompResAlqFacade implements CompResAlqFacadeRemote {
         if (alquilerFacade.find(a.getIdalquiler()) == null) {
             return false;
         }
-
         return true;
-
     }
 
-    @Override
     public String[] getReservados(Date fechaInicial, Date fechaFinal) {
         if(fechaInicial == null){
             return null;
         }else if(fechaFinal == null){
             return null;
         }
-        
         return reservaFacade.findInDate(fechaInicial, fechaFinal);
     }
 
@@ -137,7 +122,4 @@ public class CompResAlqFacade implements CompResAlqFacadeRemote {
         }
         return true;
     }
-
-    // Add business logic below. (Right-click in editor and choose
-    // "Insert Code > Add Business Method")
 }

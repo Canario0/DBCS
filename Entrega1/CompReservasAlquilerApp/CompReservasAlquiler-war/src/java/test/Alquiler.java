@@ -5,7 +5,7 @@
  */
 package test;
 
-import ejb.despliegue.CompResAlqFacadeLocal;
+import ejb.despliegue.CompResAlqFacadeRemote;
 import ejb.dominio.Reserva;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -32,7 +32,7 @@ import javax.servlet.http.HttpServletResponse;
 public class Alquiler extends HttpServlet {
 
     @EJB
-    private CompResAlqFacadeLocal bean;
+    private CompResAlqFacadeRemote bean;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>

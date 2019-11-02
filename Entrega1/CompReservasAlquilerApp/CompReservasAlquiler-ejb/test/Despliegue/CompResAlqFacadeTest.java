@@ -51,8 +51,9 @@ public class CompResAlqFacadeTest {
         System.out.println("addReserva");
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         String dateString = format.format(new Date());
-        Date fechaInicio = format.parse("2019-11-01");
-        Date fechaFin = format.parse("2019-11-11");
+        //Nota: hemos modificado las fechas para evitar errores con nuestras validaciones
+        Date fechaInicio = format.parse("2019-12-01");
+        Date fechaFin = format.parse("2019-13-11");
         String NIF = "12418684H";
         String matricula = "9012ZZZ";
         //EJBContainer container = javax.ejb.embeddable.EJBContainer.createEJBContainer();
