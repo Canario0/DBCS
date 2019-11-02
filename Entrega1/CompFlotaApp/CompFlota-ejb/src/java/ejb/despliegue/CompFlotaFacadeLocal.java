@@ -22,12 +22,12 @@ public interface CompFlotaFacadeLocal {
     /**
      * Añade un vehículo al sistema
      *
-     * @param idModelo
-     * @param matricula
-     * @param color
-     * @param km
-     * @param averiado
-     * @return
+     * @param idModelo id del modelo en el sistema
+     * @param matricula matricula del vehículo
+     * @param color color del vehículo
+     * @param km km actuales del vehículo
+     * @param averiado estado actual del vehículo, si se encuentra averiado el valor debe ser T si no F
+     * @return true si todo ha sido correcto, false en otro caso
      */
     boolean addVehiculo(String idModelo, String matricula, String color, float km, char averiado);
 
