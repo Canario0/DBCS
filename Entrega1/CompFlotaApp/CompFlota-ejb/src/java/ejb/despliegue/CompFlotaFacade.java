@@ -32,14 +32,18 @@ public class CompFlotaFacade implements CompFlotaFacadeLocal {
 
     @EJB
     private CompResAlqFacadeRemote reservaAlquilerRemote;
+
     @EJB
     private VehiculoFacadeLocal vehiculoFacade;
+
     @EJB
     private ModeloFacadeLocal modeloFacade;
+
     @EJB
     private LicenciaspormodeloFacadeLocal licenciaspormodeloFacade;
 
     public List<Vehiculo> getVehiculos(String[] licencias, Date fechaIni, Date fechaFin) {
+        LOGGER.log(Level.INFO, "Llamada a getVehiculos");
         if (licencias == null) {
             return null;
         } else if (fechaIni == null) {
@@ -47,17 +51,14 @@ public class CompFlotaFacade implements CompFlotaFacadeLocal {
         } else if (fechaFin == null) {
             return null;
         }
-
         List<Vehiculo> vehiculos = vehiculoFacade.findNotAveriado('F');
         if (vehiculos == null) {
             return null;
         }
-
         String[] reservados = reservaAlquilerRemote.getReservados(fechaIni, fechaFin);
         if (reservados == null) {
             return null;
         }
-
         String matricula = null;
         List<Vehiculo> disponibles = new ArrayList<Vehiculo>();
         List<String> reservadosList = Arrays.asList(reservados);
@@ -67,7 +68,6 @@ public class CompFlotaFacade implements CompFlotaFacadeLocal {
                 disponibles.add(v);
             }
         }
-
         List<Vehiculo> result = new ArrayList<Vehiculo>();
         List<String> idModelos;
         List<String> licenciasList = Arrays.asList(licencias);
@@ -80,14 +80,13 @@ public class CompFlotaFacade implements CompFlotaFacadeLocal {
                 }
             }
         }
-
         return result;
-
     }
 
     public boolean addVehiculo(String idModelo, String matricula, String color, float km, char averiado) {
         LOGGER.log(Level.INFO, "Llamada a addVehiculo");
-        if (idModelo == null || idModelo.isEmpty() || matricula == null || matricula.isEmpty() || color == null || color.isEmpty() || km < 0 || (averiado != 'T' && averiado != 'F')) {
+        if (idModelo == null || idModelo.isEmpty() || matricula == null || matricula.isEmpty() || color == null
+                || color.isEmpty() || km < 0 || (averiado != 'T' && averiado != 'F')) {
             return false;
         }
         Modelo modelo = modeloFacade.find(idModelo);

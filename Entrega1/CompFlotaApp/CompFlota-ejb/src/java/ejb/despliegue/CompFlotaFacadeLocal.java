@@ -17,16 +17,26 @@ import javax.ejb.Local;
 @Local
 public interface CompFlotaFacadeLocal {
 
+    /**
+     * Método para obtener aquelos vehículos disponibles para reservar entre dos
+     * fechas
+     * 
+     * @param licencias licencias de los vehículos solicitados
+     * @param fechaIni fecha de inicio
+     * @param fechaFin fecha fin
+     * @return lista de los vehículos disponibles, en caso de error null
+     */
     List<Vehiculo> getVehiculos(String[] licencias, Date fechaIni, Date fechaFin);
 
     /**
      * Añade un vehículo al sistema
      *
-     * @param idModelo id del modelo en el sistema
+     * @param idModelo  id del modelo en el sistema
      * @param matricula matricula del vehículo
-     * @param color color del vehículo
-     * @param km km actuales del vehículo
-     * @param averiado estado actual del vehículo, si se encuentra averiado el valor debe ser T si no F
+     * @param color     color del vehículo
+     * @param km        km actuales del vehículo
+     * @param averiado  estado actual del vehículo, si se encuentra averiado el
+     *                  valor debe ser T si no F
      * @return true si todo ha sido correcto, false en otro caso
      */
     boolean addVehiculo(String idModelo, String matricula, String color, float km, char averiado);
@@ -35,8 +45,8 @@ public interface CompFlotaFacadeLocal {
      * Elimina un vhículo del sistema.
      *
      * @param matricula matrícula del vehículo que se quiere borrar.
-     * @return true si el vehículo se ha borrado correctamente, false en
-     * cualquier otro caso. contrario.
+     * @return true si el vehículo se ha borrado correctamente, false en cualquier
+     *         otro caso. contrario.
      */
     boolean delVehiculo(String matricula);
 }

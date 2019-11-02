@@ -54,9 +54,14 @@ public class CompFlotaFacadeTest {
         Date FechaIni = format.parse("2019-08-10");
         Date FechaFin = format.parse("2019-08-20");
         //EJBContainer container = javax.ejb.embeddable.EJBContainer.createEJBContainer();
-        CompFlotaFacadeLocal instance = (CompFlotaFacadeLocal) container.getContext().lookup("java:global/classes/CompFlotaFacade");
-        String[] matriculas = {"1234ZZZ", "9012ZZZ", "7042ZZZ", "7082ZZZ", "5678ZZZ"};
+        CompFlotaFacadeLocal instance = (CompFlotaFacadeLocal) container.getContext().lookup("java:global/ejb-app/classes/CompFlotaFacade");
+        // matriculas originales
+        // String[] matriculas = {"1234ZZZ", "9012ZZZ", "7042ZZZ", "7082ZZZ", "5678ZZZ"};
+        // matriculas quitando los coches que se encuentran averiados
+        String[] matriculas = {"1234ZZZ", "7042ZZZ", "7082ZZZ", "5678ZZZ"};
         List<Vehiculo> vehiculos = instance.getVehiculos(Licencias, FechaIni, FechaFin);
+        System.out.println("CACOTA");
+        System.out.print(vehiculos.toString());
         Boolean result = true;
         for (int i = 0; i < matriculas.length; i++) {
             Boolean esta = false;
@@ -86,7 +91,7 @@ public class CompFlotaFacadeTest {
         Date FechaIni = format.parse("2019-08-30");
         Date FechaFin = format.parse("2019-09-03");
         //EJBContainer container = javax.ejb.embeddable.EJBContainer.createEJBContainer();
-        CompFlotaFacadeLocal instance = (CompFlotaFacadeLocal) container.getContext().lookup("java:global/classes/CompFlotaFacade");
+        CompFlotaFacadeLocal instance = (CompFlotaFacadeLocal) container.getContext().lookup("java:global/ejb-app/classes/CompFlotaFacade");
         String matricula = "7042ZZZ";
         List<Vehiculo> vehiculos = instance.getVehiculos(Licencias, FechaIni, FechaFin);
         Boolean result = true;
@@ -111,7 +116,7 @@ public class CompFlotaFacadeTest {
         Date FechaIni = format.parse("2019-08-10");
         Date FechaFin = format.parse("2019-08-20");
         //EJBContainer container = javax.ejb.embeddable.EJBContainer.createEJBContainer();
-        CompFlotaFacadeLocal instance = (CompFlotaFacadeLocal) container.getContext().lookup("java:global/classes/CompFlotaFacade");
+        CompFlotaFacadeLocal instance = (CompFlotaFacadeLocal) container.getContext().lookup("java:global/ejb-app/classes/CompFlotaFacade");
         String matricula = "5678ZZZ";
         List<Vehiculo> vehiculos = instance.getVehiculos(Licencias, FechaIni, FechaFin);
         Boolean result = true;
@@ -140,7 +145,7 @@ public class CompFlotaFacadeTest {
         float Km = 0.0F;
         char averiado = 'F';
         //EJBContainer container = javax.ejb.embeddable.EJBContainer.createEJBContainer();
-        CompFlotaFacadeLocal instance = (CompFlotaFacadeLocal) container.getContext().lookup("java:global/classes/CompFlotaFacade");
+        CompFlotaFacadeLocal instance = (CompFlotaFacadeLocal) container.getContext().lookup("java:global/ejb-app/classes/CompFlotaFacade");
         Boolean expResult = false;
         Boolean result = instance.addVehiculo(idModelo, matricula, color, Km, averiado);
         assertEquals(expResult, result);
@@ -159,7 +164,7 @@ public class CompFlotaFacadeTest {
         float Km = 0.0F;
         char averiado = 'F';
         //EJBContainer container = javax.ejb.embeddable.EJBContainer.createEJBContainer();
-        CompFlotaFacadeLocal instance = (CompFlotaFacadeLocal) container.getContext().lookup("java:global/classes/CompFlotaFacade");
+        CompFlotaFacadeLocal instance = (CompFlotaFacadeLocal) container.getContext().lookup("java:global/ejb-app/classes/CompFlotaFacade");
         Boolean expResult = true;
         Boolean result = instance.addVehiculo(idModelo, matricula, color, Km, averiado);
         assertEquals(expResult, result);
@@ -177,6 +182,8 @@ public class CompFlotaFacadeTest {
                 break;
             }
         }
+        // Este paso se ha añadido para evitar que el test falle en la siguiente ejecución
+        instance.delVehiculo(matricula);
         assertTrue(result);
         //container.close();
         // TODO review the generated test code and remove the default call to fail.
@@ -192,7 +199,7 @@ public class CompFlotaFacadeTest {
         System.out.println("delVehiculo con error. El vehiculo no existe");
         String matricula = "NoExiste";
         //EJBContainer container = javax.ejb.embeddable.EJBContainer.createEJBContainer();
-        CompFlotaFacadeLocal instance = (CompFlotaFacadeLocal) container.getContext().lookup("java:global/classes/CompFlotaFacade");
+        CompFlotaFacadeLocal instance = (CompFlotaFacadeLocal) container.getContext().lookup("java:global/ejb-app/classes/CompFlotaFacade");
         Boolean expResult = false;
         Boolean result = instance.delVehiculo(matricula);
         assertEquals(expResult, result);
@@ -207,7 +214,7 @@ public class CompFlotaFacadeTest {
         System.out.println("delVehiculo sin error.");
         String matricula = "0001ZZZ";
         //EJBContainer container = javax.ejb.embeddable.EJBContainer.createEJBContainer();
-        CompFlotaFacadeLocal instance = (CompFlotaFacadeLocal) container.getContext().lookup("java:global/classes/CompFlotaFacade");
+        CompFlotaFacadeLocal instance = (CompFlotaFacadeLocal) container.getContext().lookup("java:global/ejb-app/classes/CompFlotaFacade");
         String idModelo = "1";
         String color = "Rojo";
         float Km = 0.0F;
