@@ -53,10 +53,8 @@ public class Flota extends HttpServlet {
         String dateInString2 = "2019-11-02";
         Date date = sdf.parse(dateInString);
         Date date2 = sdf.parse(dateInString2);
-        //System.out.println(bean.addReserva(date,date2,"12418684H","1234ZZZ"));
         
         List<Vehiculo> vehiculos = compFlotaFacade.getVehiculos(new String[]{"C","B"}, date, date2);
-        vehiculos.forEach(v -> System.out.println(v.getMatricula()));
         
         RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/index.jsp");
         dispatcher.forward(request, response);
