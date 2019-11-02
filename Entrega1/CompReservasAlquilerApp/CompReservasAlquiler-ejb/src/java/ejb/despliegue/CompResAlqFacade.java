@@ -5,17 +5,15 @@
  */
 package ejb.despliegue;
 
-import com.sun.xml.wss.util.DateUtils;
 import ejb.dominio.Alquiler;
 import ejb.dominio.Reserva;
 import ejb.persistencia.AlquilerFacadeLocal;
 import ejb.persistencia.ReservaFacadeLocal;
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
