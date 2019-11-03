@@ -5,17 +5,15 @@
  */
 package ejb.despliegue;
 
-import com.sun.xml.wss.util.DateUtils;
 import ejb.dominio.Alquiler;
 import ejb.dominio.Reserva;
 import ejb.persistencia.AlquilerFacadeLocal;
 import ejb.persistencia.ReservaFacadeLocal;
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
@@ -26,6 +24,8 @@ import javax.ejb.Stateless;
 @Stateless
 public class CompResAlqFacade implements CompResAlqFacadeRemote {
 
+    private final static Logger LOGGER = Logger.getLogger(CompResAlqFacade.class.getName());
+
     @EJB
     private AlquilerFacadeLocal alquilerFacade;
 
@@ -33,6 +33,7 @@ public class CompResAlqFacade implements CompResAlqFacadeRemote {
     private ReservaFacadeLocal reservaFacade;
 
     public boolean addReserva(Date fechaInicio, Date fechaFin, String nif, String matricula) {
+        LOGGER.log(Level.INFO, "Llamada a addReserva");
         if (fechaInicio == null || isDateValid(fechaInicio)) {
             return false;
         } else if (fechaFin == null || isDateValid(fechaFin)) {
@@ -58,6 +59,7 @@ public class CompResAlqFacade implements CompResAlqFacadeRemote {
     }
 
     public List<Reserva> getReservasF(String nif) {
+        LOGGER.log(Level.INFO, "Llamada a getReservasF");
         if (nif == null || "".equals(nif.trim())) {
             return null;
         }
@@ -65,6 +67,7 @@ public class CompResAlqFacade implements CompResAlqFacadeRemote {
     }
 
     public boolean addAlquiler(int reserva, float km, String idEmpleado) {
+        LOGGER.log(Level.INFO, "Llamada a addAlquiler");
         if (reserva <= 0) {
             return false;
         } else if (km < 0) {
@@ -104,6 +107,7 @@ public class CompResAlqFacade implements CompResAlqFacadeRemote {
     }
 
     public String[] getReservados(Date fechaInicial, Date fechaFinal) {
+        LOGGER.log(Level.INFO, "Llamada a getReservados");
         if(fechaInicial == null){
             return null;
         }else if(fechaFinal == null){
