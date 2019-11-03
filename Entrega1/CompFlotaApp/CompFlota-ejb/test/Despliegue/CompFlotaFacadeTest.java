@@ -60,8 +60,6 @@ public class CompFlotaFacadeTest {
         // matriculas quitando los coches que se encuentran averiados
         String[] matriculas = {"1234ZZZ", "7042ZZZ", "7082ZZZ", "5678ZZZ"};
         List<Vehiculo> vehiculos = instance.getVehiculos(Licencias, FechaIni, FechaFin);
-        System.out.println("CACOTA");
-        System.out.print(vehiculos.toString());
         Boolean result = true;
         for (int i = 0; i < matriculas.length; i++) {
             Boolean esta = false;
