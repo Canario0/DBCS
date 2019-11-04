@@ -12,5 +12,3 @@ En este caso hicimos uso de una interfaz remota, por existir dependencias extern
 ## Componente Usuario
 En este caso hicimos uso de una interfaz local.
 ![](TestCompUsuario.PNG)
-
-Nota: para ejecutar los test hemos tenido que resetear los valores de la base de datos entre ejecuciones. Esto es debido a una gran dependencia entre ambos y a no resetear a los valores originales entre ejecuciones.
