@@ -53,7 +53,7 @@ public class CompResAlqFacadeTest {
         String dateString = format.format(new Date());
         //Nota: hemos modificado las fechas para evitar errores con nuestras validaciones
         Date fechaInicio = format.parse("2019-12-01");
-        Date fechaFin = format.parse("2019-13-11");
+        Date fechaFin = format.parse("2020-01-11");
         String NIF = "12418684H";
         String matricula = "9012ZZZ";
         //EJBContainer container = javax.ejb.embeddable.EJBContainer.createEJBContainer();
