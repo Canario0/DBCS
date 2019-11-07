@@ -12,6 +12,6 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <h1>Algo ha ido mal: <%= session.getAttribute("mensaje")%></h1>
+        <h1>Algo ha ido mal: <%= request.getAttribute("message")%></h1>
     </body>
 </html>

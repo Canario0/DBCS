@@ -3,10 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package contraladores;
+package controladores;
 
+import ejb.despliegue.CompUsuariosFacadeLocal;
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.ejb.EJB;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -17,8 +21,12 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author Prene
  */
-@WebServlet(name = "CUResAlq", urlPatterns = {"/controllerResAlq"})
-public class CUResAlq extends HttpServlet {
+@WebServlet(name = "IndexController", urlPatterns = {"/indexController"})
+public class IndexController extends HttpServlet {
+
+    private static final Logger LOGGER = Logger.getLogger(IndexController.class.getName());
+    @EJB
+    private CompUsuariosFacadeLocal usuarioFacade;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -31,7 +39,20 @@ public class CUResAlq extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        // TODO: Implementar
+        String user = request.getParameter("nombre");
+        String pass = request.getParameter("clave");
+        String tipo = request.getParameter("accion");
+        boolean login = usuarioFacade.controlAccesos(user, pass, tipo);
+        LOGGER.log(Level.INFO, String.format("%s se quiere loggear con contraseña %s y tipo %s. Resultado login %s", user, pass, tipo, login));
+        if ("cliente".equals(tipo.toLowerCase()) && login) {
+            request.setAttribute("message", "Cliente loggueado");
+        } else if ("empleado".equals(tipo.toLowerCase()) && login) {
+            request.setAttribute("message", "Empleado loggueado");
+        } else {
+            request.setAttribute("message", "Loggin invalido");
+        }
+        RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/error.jsp");
+        dispatcher.forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
