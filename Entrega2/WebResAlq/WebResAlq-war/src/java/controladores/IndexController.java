@@ -45,7 +45,15 @@ public class IndexController extends HttpServlet {
         boolean login = usuarioFacade.controlAccesos(user, pass, tipo);
         LOGGER.log(Level.INFO, String.format("%s se quiere loggear con contraseña %s y tipo %s. Resultado login %s", user, pass, tipo, login));
         if ("cliente".equals(tipo.toLowerCase()) && login) {
-            request.setAttribute("message", "Cliente loggueado");
+            String nif = usuarioFacade.getNIF(user);
+            if('T' == usuarioFacade.bloqueado(nif)){
+                request.setAttribute("message", "Su cuenta ha sido bloqueada, contacte con un administrador.");
+                RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/error.jsp");
+                dispatcher.forward(request, response);
+            }else{
+                RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/reservas.html");
+                dispatcher.forward(request, response); 
+            }
         } else if ("empleado".equals(tipo.toLowerCase()) && login) {
             request.setAttribute("message", "Empleado loggueado");
         } else {
