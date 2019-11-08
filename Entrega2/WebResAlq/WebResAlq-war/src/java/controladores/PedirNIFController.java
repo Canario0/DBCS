@@ -5,8 +5,12 @@
  */
 package controladores;
 
-import ejb.despliegue.CompUsuariosFacadeLocal;
+import ejb.despliegue.CompResAlqFacadeRemote;
+import ejb.dominio.Reserva;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.lang.reflect.Array;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
@@ -21,12 +25,12 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author Prene
  */
-@WebServlet(name = "IndexController", urlPatterns = {"/indexController"})
-public class IndexController extends HttpServlet {
+@WebServlet(name = "PedirNIFController", urlPatterns = {"/PedirNIFController"})
+public class PedirNIFController extends HttpServlet {
 
-    private static final Logger LOGGER = Logger.getLogger(IndexController.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(PedirNIFController.class.getName());
     @EJB
-    private CompUsuariosFacadeLocal usuarioFacade;
+    private CompResAlqFacadeRemote resalqFacade;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -39,31 +43,12 @@ public class IndexController extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String user = request.getParameter("nombre");
-        String pass = request.getParameter("clave");
-        String tipo = request.getParameter("accion");
-        boolean login = usuarioFacade.controlAccesos(user, pass, tipo);
-        LOGGER.log(Level.INFO, String.format("%s se quiere loggear con contraseña %s y tipo %s. Resultado login %s", user, pass, tipo, login));
-        if ("cliente".equals(tipo.toLowerCase()) && login) {
-            String nif = usuarioFacade.getNIF(user);
-            if ('T' == usuarioFacade.bloqueado(nif)) {
-                request.setAttribute("message", "Su cuenta ha sido bloqueada, contacte con un administrador.");
-                RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/error.jsp");
-                dispatcher.forward(request, response);
-            } else {
-                request.getSession().setAttribute("NIF", nif);
-                RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/reservas.html");
-                dispatcher.forward(request, response);
-            }
-        } else if ("empleado".equals(tipo.toLowerCase()) && login) {
-            RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/pedirNIF.html");
-            dispatcher.forward(request, response);
-        } else {
-            request.setAttribute("message", "Loggin invalido");
-            RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/error.jsp");
-            dispatcher.forward(request, response);
-        }
-
+        String nifCliente = request.getParameter("nif");
+        List<Reserva> reservaList = resalqFacade.getReservasF(nifCliente);
+        LOGGER.log(Level.INFO, String.format("Cliente %s reservas %s", nifCliente, reservaList.toString()));
+        request.setAttribute("reservasCli", reservaList);
+        RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/mostrarReservas.jsp");
+        dispatcher.forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

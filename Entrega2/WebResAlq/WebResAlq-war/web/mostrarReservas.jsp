@@ -4,7 +4,7 @@
     Author     : cevp
 --%>
 
-<%@page import="Dominio.Reserva"%>
+<%@page import="ejb.dominio.Reserva"%>
 <%@page import="java.util.List"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -20,20 +20,22 @@
                 <th style="width: 150px">Matricula</th>
                 <th style="width: 50px">Id</th>
             </tr>
-            <% List<Reserva> reservas = (List<Reserva>) session.getAttribute("reservasCli");
+            <% List<Reserva> reservas = (List<Reserva>) request.getAttribute("reservasCli");
                 int i = 0;
                 for (Reserva item : reservas) {%>
             <tr>
                 <td> <%= item.getMatricula()%></td>
-                <td> <%= i%></td>
+                <td> <%= item.getIdreserva() %></td>
 
             </tr>
             <% i = i +1;
                 }%>
         </table>
         <p> Introducir Id </p>
-        <form action="controlador" name="ejemplo" method="get">
+        <form action="MostrarReservaController" name="ejemplo" method="get">
             Id: <input type="text" name="IdReserva"><br>
+            Id Empleado: <input type="text" name="IdEmpleado"><br>
+            Km: <input type="text" name="KM"><br>
         <input type="submit" name="accion" value="Alquilar">
         </form>
     </body>
