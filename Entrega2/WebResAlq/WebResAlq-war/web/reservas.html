@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>reservas</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <p>Introduce fechas. Formato yyyy-mm-dd</p>
+        <form action="ReservasController" name="ejemplo" method="get">
+            Fecha Incial: <input type="date" name="fechaI" required><br>
+            Fecha Final: <input type="date" name="fechaF" required><br><br>
+        <input type="submit" name="accion" value="Reservar">
+        <input type="reset" value="Vaciar">
+        </form>
+    </body>
+</html>
