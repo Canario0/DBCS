@@ -12,10 +12,9 @@ and open the template in the editor.
     </head>
     <body>
         <p>Introduce fechas. Formato yyyy-mm-dd</p>
-        <form action="controlador" name="ejemplo" method="get">
-            Fecha Incial: <input type="date" name="fechaI"><br>
-            Fecha Final: <input type="date" name="fechaF"><br>
-            Licencias: <input type="text" name="carnet"><br><br>
+        <form action="ReservasController" name="ejemplo" method="get">
+            Fecha Incial: <input type="date" name="fechaI" required><br>
+            Fecha Final: <input type="date" name="fechaF" required><br><br>
         <input type="submit" name="accion" value="Reservar">
         <input type="reset" value="Vaciar">
         </form>

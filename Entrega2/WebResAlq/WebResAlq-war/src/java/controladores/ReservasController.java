@@ -5,8 +5,15 @@
  */
 package controladores;
 
+import ejb.despliegue.CompFlotaFacadeLocal;
 import ejb.despliegue.CompUsuariosFacadeLocal;
+import ejb.dominio.Vehiculo;
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
@@ -16,17 +23,20 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import utils.Utils;
 
 /**
  *
  * @author Prene
  */
-@WebServlet(name = "IndexController", urlPatterns = {"/indexController"})
-public class IndexController extends HttpServlet {
+@WebServlet(name = "ReservasController", urlPatterns = {"/ReservasController"})
+public class ReservasController extends HttpServlet {
 
-    private static final Logger LOGGER = Logger.getLogger(IndexController.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(ReservasController.class.getName());
     @EJB
     private CompUsuariosFacadeLocal usuarioFacade;
+    @EJB
+    private CompFlotaFacadeLocal flotaFacade;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -39,32 +49,21 @@ public class IndexController extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String user = request.getParameter("nombre");
-        String pass = request.getParameter("clave");
-        String tipo = request.getParameter("accion");
-        boolean login = usuarioFacade.controlAccesos(user, pass, tipo);
-        LOGGER.log(Level.INFO, String.format("%s se quiere loggear con contraseña %s y tipo %s. Resultado login %s", user, pass, tipo, login));
-        if ("cliente".equals(tipo.toLowerCase()) && login) {
-            String nif = usuarioFacade.getNIF(user);
-            if ('T' == usuarioFacade.bloqueado(nif)) {
-                request.setAttribute("message", "Su cuenta ha sido bloqueada, contacte con un administrador.");
-                RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/error.jsp");
-                dispatcher.forward(request, response);
-            } else {
-                request.getSession().setAttribute("NIF", nif);
-                RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/reservas.html");
-                dispatcher.forward(request, response);
-            }
-        } else if ("empleado".equals(tipo.toLowerCase()) && login) {
-            request.setAttribute("message", "Empleado loggueado");
-            RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/error.jsp");
+        response.setContentType("text/html;charset=UTF-8");
+        String userNif = (String) request.getSession().getAttribute("NIF");
+        String[] licencias = usuarioFacade.getLicencias(userNif);
+        Date fechaInicio = Utils.parseDate((String) request.getParameter("fechaI"));
+        Date fechaFin = Utils.parseDate((String) request.getParameter("fechaF"));
+        LOGGER.log(Level.INFO, String.format("Procesando periodo reservar del usuario con nif %s con licencias %s con fecha inicio %s y fecha fin %s", userNif, Arrays.toString(licencias), fechaInicio.toString(), fechaFin.toString()));
+        List <Vehiculo> vehiculos = flotaFacade.getVehiculos(licencias, fechaFin, fechaFin);
+        if (vehiculos == null){
+            RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/error.html");
             dispatcher.forward(request, response);
-        } else {
-            request.setAttribute("message", "Loggin invalido");
-            RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/error.jsp");
+        }else{
+            request.setAttribute("vehiculos", vehiculos);
+            RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/reservar.jsp");
             dispatcher.forward(request, response);
         }
-
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
