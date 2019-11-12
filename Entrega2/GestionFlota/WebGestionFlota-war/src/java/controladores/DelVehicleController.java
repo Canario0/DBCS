@@ -49,13 +49,9 @@ public class DelVehicleController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String idModelo = request.getParameter("idModelo");
         String matricula = request.getParameter("matricula");
-        String color = request.getParameter("color");
-        float km = Float.parseFloat(request.getParameter("km"));
-        char averiado = request.getParameter("averiado").charAt(0);
 
-        boolean correct = flotaFacade.addVehiculo(idModelo, matricula, color, km, averiado);
+        boolean correct = flotaFacade.delVehiculo(matricula);
         RequestDispatcher dispatcher;
         if (correct) {
             //request.setAttribute("vehiculos", vehiculos);
