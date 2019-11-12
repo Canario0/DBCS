@@ -28,7 +28,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author Prene
  */
-@WebServlet(name = "ReservasController", urlPatterns = {"/ReservasController"})
+@WebServlet(name = "AddVehicleController", urlPatterns = {"/AddVehicleController"})
 public class AddVehicleController extends HttpServlet {
 
     @EJB
@@ -58,7 +58,7 @@ public class AddVehicleController extends HttpServlet {
             //request.setAttribute("vehiculos", vehiculos);
             dispatcher = getServletContext().getRequestDispatcher("/operacionCorrecta.html");
         } else {
-            dispatcher = getServletContext().getRequestDispatcher("/error.html");
+            dispatcher = getServletContext().getRequestDispatcher("/error.jsp");
         }
         dispatcher.forward(request, response);
 

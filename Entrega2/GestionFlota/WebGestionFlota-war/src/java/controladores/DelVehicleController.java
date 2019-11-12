@@ -28,7 +28,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author Prene
  */
-@WebServlet(name = "ReservasController", urlPatterns = {"/ReservasController"})
+@WebServlet(name = "DelVehicleController", urlPatterns = {"/DelVehicleController"})
 public class DelVehicleController extends HttpServlet {
 
     private static final Logger LOGGER = Logger.getLogger(DelVehicleController.class.getName());
