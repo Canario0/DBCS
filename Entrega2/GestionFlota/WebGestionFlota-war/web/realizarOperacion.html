@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <p>Añadir vehiculo</p>
+        <form action="AddVehicleController" name="addVehiculo" method="get">
+            Id Modelo: <input type="text" name="idModelo"><br>
+            Matricula: <input type="text" name="matricula"><br>
+            Color: <input type="text" name="color"><br>
+            Km: <input type="text" name="km"><br>
+            Averiado: <input type="text" name="averiado"><br>
+            <br>
+        <input type="submit" name="accion" value="addVehiculo">
+        <input type="reset" value="Vaciar">
+        </form>
+        
+        <br>
+        <p>Borrar vehiculo</p>
+        <form action="DelVehicleController" name="addVehiculo" method="get">
+            Matricula: <input type="text" name="matricula"><br>
+            <br>
+        <input type="submit" name="accion" value="delVehiculo">
+        <input type="reset" value="Vaciar">
+        </form>
+    </body>
+</html>
