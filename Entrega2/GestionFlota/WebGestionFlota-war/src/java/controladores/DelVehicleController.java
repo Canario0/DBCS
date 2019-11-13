@@ -33,8 +33,6 @@ public class DelVehicleController extends HttpServlet {
 
     private static final Logger LOGGER = Logger.getLogger(DelVehicleController.class.getName());
     @EJB
-    private CompUsuariosFacadeLocal usuarioFacade;
-    @EJB
     private CompFlotaFacadeLocal flotaFacade;
 
     /**
