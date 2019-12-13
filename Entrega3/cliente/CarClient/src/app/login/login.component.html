@@ -5,9 +5,10 @@
       <mat-form-field>
         <input matInput placeholder="Usuario" value="" required name='user' [(ngModel)]="login.user" #user="ngModel">
         <mat-hint>Nombre de usuario</mat-hint>
-        <mat-error [hidden]="user.valid || user.pristine">
-          {{errorMessage}}
-        </mat-error>
+        <!-- Esto sería necesario si tuvieramos algún tipo de restricción -->
+        <!-- <mat-error [hidden]="user.valid || user.pristine"> -->
+          <!-- {{errorMessage}} -->
+        <!-- </mat-error> -->
       </mat-form-field>
       <mat-form-field>
         <input matInput placeholder="Contraseña" type="password" required name='password' [(ngModel)]="login.password" #pass="ngModel">
