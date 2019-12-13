@@ -30,6 +30,7 @@ public class ApplicationConfig extends Application {
      */
     private void addRestResourceClasses(Set<Class<?>> resources) {
         resources.add(backend.BackendResource.class);
+        resources.add(backend.SessionService.class);
     }
     
 }
