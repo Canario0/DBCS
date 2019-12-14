@@ -15,7 +15,7 @@ export class LoginService {
     const url = LoginService.baseURL + '/' + user;
     return this.http.get<LoginMessage>(url, {
       headers: new HttpHeaders({
-        ' Authorization ': user
+        Authorization: password
       }),
       observe: 'response',
       responseType: 'text' as 'json'
