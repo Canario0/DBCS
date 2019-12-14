@@ -8,11 +8,13 @@ import { LoginComponent } from './login/login.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatCardModule, MatFormFieldModule, MatInputModule, MatButtonModule, MatSnackBarModule } from '@angular/material';
 import { FormsModule } from '@angular/forms';
+import { ReservasListComponent } from './reservas-list/reservas-list.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    LoginComponent
+    LoginComponent,
+    ReservasListComponent
   ],
   imports: [
     BrowserModule,

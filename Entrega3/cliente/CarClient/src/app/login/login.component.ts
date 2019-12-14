@@ -3,6 +3,7 @@ import { LoginService } from './../shared/login.service';
 import { MatSnackBar } from '@angular/material';
 import { Component, OnInit } from '@angular/core';
 import { LoginForm } from '../shared/login-form';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -13,7 +14,7 @@ export class LoginComponent implements OnInit {
   login: LoginForm = { user: '', password: '' };
   // errorMessage = "";
 
-  constructor(private snackbar: MatSnackBar, private loginService: LoginService) { }
+  constructor(private snackbar: MatSnackBar, private loginService: LoginService, private route: Router) { }
 
   ngOnInit() {
   }
@@ -21,8 +22,7 @@ export class LoginComponent implements OnInit {
   onSubmit() {
     this.loginService.getLogin(this.login.user, this.login.password).subscribe(
       resp => {
-        // TODO: implementar redirección
-        console.log('Redireccionando');
+        this.route.navigate(['/reservas']);
       },
       err => {
         if (err.status === 401) {
