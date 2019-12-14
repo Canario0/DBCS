@@ -1,3 +1,5 @@
+import { Router } from '@angular/router';
+import { SessionService } from './../shared/session.service';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -7,9 +9,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ReservasListComponent implements OnInit {
 
-  constructor() { }
+  constructor(private session: SessionService, private route: Router) { }
 
   ngOnInit() {
+    if (this.session.checkLoggedIn() === false) {
+      this.route.navigate(['/login']);
+    }
   }
 
 }

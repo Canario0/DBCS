@@ -1,4 +1,5 @@
-import { HttpErrorResponse } from '@angular/common/http';
+import { SessionService } from './../shared/session.service';
+import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { LoginService } from './../shared/login.service';
 import { MatSnackBar } from '@angular/material';
 import { Component, OnInit } from '@angular/core';
@@ -14,7 +15,7 @@ export class LoginComponent implements OnInit {
   login: LoginForm = { user: '', password: '' };
   // errorMessage = "";
 
-  constructor(private snackbar: MatSnackBar, private loginService: LoginService, private route: Router) { }
+  constructor(private snackbar: MatSnackBar, private loginService: LoginService, private route: Router, private session: SessionService) { }
 
   ngOnInit() {
   }
@@ -22,6 +23,7 @@ export class LoginComponent implements OnInit {
   onSubmit() {
     this.loginService.getLogin(this.login.user, this.login.password).subscribe(
       resp => {
+        this.session.setLoggedIn(resp.body);
         this.route.navigate(['/reservas']);
       },
       err => {

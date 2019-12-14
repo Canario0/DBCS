@@ -4,23 +4,16 @@ import dominio.Cliente;
 import dominio.Tipocarnet;
 import dominio.Usuario;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.ejb.EJB;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
-import javax.ws.rs.PUT;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.ResponseBuilder;
 import persistencia.ClienteFacadeLocal;
 import persistencia.UsuarioFacadeLocal;
 
@@ -73,9 +66,10 @@ public class SessionService {
                         .entity("{ \"message\": \"" + BLOQUEADO + "\"}")
                         .build();
             } else {
+                String nif = getNIF(username);
                 return Response
                         .status(Response.Status.OK)
-                        .entity("{ \"message\": \"" + CORRECTO + "\"}")
+                        .entity("{ \"nif\": \""+nif+"\", \"message\": \"" + CORRECTO + "\"}")
                         .build();
             }
 
