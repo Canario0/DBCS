@@ -1,16 +1,20 @@
-<div class="main flex-c-center" style="background: #e8f5e9;">
+<form (ngSubmit)="onSubmit()" class="main flex-c-center" style="background: #e8f5e9;" #loginForm="ngForm">
   <mat-card id="login-card" class="flex-c">
     <p id="login-title">CAR Client</p>
     <div id="login-form">
       <mat-form-field>
-        <input matInput placeholder="Usuario" value="">
+        <input matInput placeholder="Usuario" value="" required name='user' [(ngModel)]="login.user" #user="ngModel">
         <mat-hint>Nombre de usuario</mat-hint>
+        <!-- Esto sería necesario si tuvieramos algún tipo de restricción -->
+        <!-- <mat-error [hidden]="user.valid || user.pristine"> -->
+          <!-- {{errorMessage}} -->
+        <!-- </mat-error> -->
       </mat-form-field>
       <mat-form-field>
-          <input matInput placeholder="Contraseña" type="password">
-          <mat-hint>Contraseña</mat-hint>
-        </mat-form-field>
+        <input matInput placeholder="Contraseña" type="password" required name='password' [(ngModel)]="login.password" #pass="ngModel">
+        <mat-hint>Contraseña</mat-hint>
+      </mat-form-field>
     </div>
-    <div id="login-actions"><button mat-raised-button>Iniciar Sesión</button></div>
+    <div id="login-actions"><button type="submit" mat-raised-button>Iniciar Sesión</button></div>
   </mat-card>
-</div>
+</form>
