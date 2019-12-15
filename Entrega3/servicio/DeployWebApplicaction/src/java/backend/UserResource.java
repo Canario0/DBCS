@@ -12,12 +12,14 @@ import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
@@ -75,23 +77,38 @@ public class UserResource {
     @Path("/{userNif}/reserva")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response createUserProfile(@PathParam("userNif") String userNif, Reserva reserva) {
+    public Response postAddReserva(@PathParam("userNif") String userNif, Reserva reserva) {
         //we can make use of UserProfile now
         Date fechaInicio = reserva.getFechainicioalquiler();
         Date fechaFin = reserva.getFechafinalquiler();
         String matricula = reserva.getMatricula();
-        
-        if(addReserva(fechaInicio,fechaFin, userNif, matricula)){
+
+        if (addReserva(fechaInicio, fechaFin, userNif, matricula)) {
             return Response
                     .status(Response.Status.CREATED)
                     .entity("{ \"message\": \"" + RESERVACREADA + "\"}")
                     .build();
-        }else{
-           return Response
+        } else {
+            return Response
                     .status(Response.Status.UNAUTHORIZED)
                     .entity("{ \"message\": \"" + RESERVAERROR + "\"}")
-                    .build(); 
+                    .build();
         }
+    }
+
+    @PUT
+    @Path("/{userNif}/reserva/{idReserva}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response putFechaReserva(@PathParam("userNif") String userNif, @PathParam("idReserva") String idReserva, Reserva reserva) {
+        return null;
+    }
+
+    @DELETE
+    @Path("/{userNif}/reserva/{idReserva}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response deleteUser(@PathParam("userNif") String userNif, @PathParam("idReserva") String idReserva, Reserva reserva) {
+        return null;
     }
 
     public boolean addReserva(Date fechaInicio, Date fechaFin, String nif, String matricula) {
