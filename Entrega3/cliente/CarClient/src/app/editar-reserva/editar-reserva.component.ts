@@ -13,9 +13,9 @@ import { switchMap } from 'rxjs/operators';
 })
 export class EditarReservaComponent implements OnInit {
   reserva: Reserva;
-  private snackbar: MatSnackBar;
 
   constructor(
+    private snackbar: MatSnackBar,
     private session: SessionService,
     private route: ActivatedRoute,
     private router: Router,
@@ -23,6 +23,9 @@ export class EditarReservaComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    if (!this.session.checkLoggedIn()) {
+      this.router.navigate(['/login']);
+    }
     let id: string;
     this.route.paramMap.subscribe(
       params => {
@@ -30,26 +33,17 @@ export class EditarReservaComponent implements OnInit {
       },
       err => console.log('Error al leer id para editar: ' + err)
     );
-    this.reserva = {
-      ejecutada: 'T',
-      fechafinalquiler: new Date('2019-01-12T00:00:00+01:00'),
-      fechainicioalquiler: new Date('2019-01-11T00:00:00+01:00'),
-      fechareserva: new Date('2019-01-01T00:00:00+01:00'),
-      idreserva: 5,
-      matricula: '5678ZZZ',
-      nif: '12418684H'
-    };
-    // this.reservaService.getReserva(this.session.getNif(), id).subscribe(
-    //   resp => this.reserva = resp,
-    //   err => {
-    //     if (err.status === 404) {
-    //       this.snackbar.open(err.error.message, 'close', { duration: 2000, verticalPosition: 'top' });
-    //     } else {
-    //       console.log('Error al obtener la reserva: ' + err.message);
-    //       throw err;
-    //     }
-    //   }
-    // );
+    this.reservaService.getReserva(this.session.getNif(), id).subscribe(
+      resp => this.reserva = resp,
+      err => {
+        if (err.status === 404) {
+          this.snackbar.open(err.error.message, 'close', { duration: 2000, verticalPosition: 'top' });
+        } else {
+          console.log('Error al obtener la reserva: ' + err.message);
+          throw err;
+        }
+      }
+    );
   }
 
   onSubmit() {

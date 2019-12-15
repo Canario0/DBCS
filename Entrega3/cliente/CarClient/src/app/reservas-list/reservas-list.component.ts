@@ -29,7 +29,7 @@ export class ReservasListComponent implements OnInit {
   }
 
   editAction(id: number) {
-    this.route.navigate(['/reserva', id]);
+    this.route.navigate(['/reservas', id]);
   }
 
   deleteAction(id: number) {
