@@ -1,4 +1,10 @@
-<div class="main">
+<div class="main" style="flex-direction: column;">
+  <mat-toolbar color="primary" style="align-items: center; justify-content: space-evenly;">
+    <button mat-flat-button (click)="newAction()">Añadir Reserva</button>
+    <span>CarClient</span>
+    <span style="visibility: hidden;"></span>
+    <span style="visibility: hidden;"></span>
+  </mat-toolbar>
   <table mat-table [dataSource]="reservas" class="mat-elevation-z1" style="width: 80%;">
     <!-- Id Column -->
     <ng-container matColumnDef="id">

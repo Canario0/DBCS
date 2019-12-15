@@ -28,4 +28,8 @@ export class ReservasListComponent implements OnInit {
   deleteAction(id: number){
     console.log(`Me han borrado ${id}`);
   }
+
+  newAction(){
+    console.log('Añadir una nueva reserva');
+  }
 }
