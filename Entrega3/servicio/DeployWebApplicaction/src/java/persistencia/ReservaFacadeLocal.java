@@ -34,5 +34,6 @@ public interface ReservaFacadeLocal {
     List<Reserva> findByNif(String nif);
     
     String[] findInDate(Date ini, Date fin);
+   
     
 }
