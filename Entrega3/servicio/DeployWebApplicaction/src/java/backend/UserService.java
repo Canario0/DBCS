@@ -49,6 +49,8 @@ public class UserService {
     private final String RESERVAERROR = "Ha habido un error al crear la reserva";
     private final String RESERVAACTUALIZADA = "Reserva actualizada correctamente";
     private final String RESERVAACTUALIZADAERROR = "Ha habido un error al actualizar la reserva";
+    private final String RESERVABORRADA = "Reserva borrada correctamente";
+    private final String RESERVABORRADAERROR = "Ha habido un error al borrar la reserva";
 
     /**
      * Creates a new instance of UserService
@@ -118,8 +120,18 @@ public class UserService {
     @DELETE
     @Path("/{userNif}/reserva/{idReserva}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response deleteUser(@PathParam("userNif") String userNif, @PathParam("idReserva") String idReserva, Reserva reserva) {
-        return null;
+    public Response deleteReserva(@PathParam("userNif") String userNif, @PathParam("idReserva") String idReserva) {
+        if (removeReserva(Integer.parseInt(idReserva))) {
+            return Response
+                    .status(Response.Status.OK)
+                    .entity("{ \"message\": \"" + RESERVABORRADA + "\"}")
+                    .build();
+        }else{
+            return Response
+                    .status(Response.Status.FORBIDDEN)
+                    .entity("{ \"message\": \"" + RESERVABORRADAERROR + "\"}")
+                    .build();
+        }
     }
 
     public boolean addReserva(Date fechaInicio, Date fechaFin, String nif, String matricula) {
@@ -162,9 +174,12 @@ public class UserService {
         } else if (idReserva <= 0) {
             return false;
         }
-        Reserva edited = new Reserva();
-
+       
         Reserva r = reservaFacade.find(idReserva);
+        if(r == null){
+            return false;
+        }
+        Reserva edited = new Reserva();
         edited.setIdreserva(idReserva);
         edited.setFechareserva(r.getFechareserva());
         edited.setFechainicioalquiler(fechaInicioAlquiler);
@@ -180,55 +195,25 @@ public class UserService {
         return true;
 
     }
+    
+    public boolean removeReserva(int idReserva) {
+        if (idReserva <= 0) {
+            return false;
+        }
 
-    public boolean addAlquiler(int reserva, float km, String idEmpleado) {
-        if (reserva <= 0) {
-            return false;
-        } else if (km < 0) {
-            return false;
-        } else if (idEmpleado == null || "".equals(idEmpleado.trim())) {
+        Reserva r = reservaFacade.find(idReserva);
+        if(r == null){
             return false;
         }
-        Reserva r = reservaFacade.find(reserva);
-        if (r == null) {
-            return false;
-        } else if (r.getEjecutada() == 'T') {
-            return false;
-        }
-        Alquiler a = new Alquiler();
-        a.setIdalquiler(alquilerFacade.count() + 1);
-        a.setFechainicio(getToday());
-        Date dt = getToday();
-        Calendar c = Calendar.getInstance();
-        c.setTime(dt);
-        c.add(Calendar.DATE, 10);
-        dt = c.getTime();
-        a.setFechafin(dt);
-        a.setKilometrajesalida(km);
-        a.setCliente(r.getNif());
-        a.setMatricula(r.getMatricula());
-        a.setRealizadopor(idEmpleado);
-        r.setEjecutada('T');
-        reservaFacade.edit(r);
-        if (reservaFacade.find(r.getIdreserva()).getEjecutada() == 'F') {
-            return false;
-        }
-        alquilerFacade.create(a);
-        if (alquilerFacade.find(a.getIdalquiler()) == null) {
+        reservaFacade.remove(r);
+
+        if (reservaFacade.find(r.getIdreserva()) != null) {
             return false;
         }
         return true;
-    }
 
-    public String[] getReservados(Date fechaInicial, Date fechaFinal) {
-        if (fechaInicial == null) {
-            return null;
-        } else if (fechaFinal == null) {
-            return null;
-        }
-        return reservaFacade.findInDate(fechaInicial, fechaFinal);
     }
-
+    
     private Date getToday() {
         return Calendar.getInstance().getTime();
     }
