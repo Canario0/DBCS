@@ -292,8 +292,10 @@ public class UserService {
 
     public Map<String, String> getInfoVehiculos(List<Vehiculo> vehiculos) {
         List<Modelo> m = new ArrayList<Modelo>();
+        // TODO: SOMOS LERDOS
+        System.out.println(vehiculos.get(0).toString());
         for (Vehiculo v : vehiculos) {
-            m.add(modeloFacade.find(v.getIdmodelo()));
+            m.add(modeloFacade.find(v.getIdmodelo().getIdmodelo()));
         }
 
         HashMap<String, String> map = new HashMap<String, String>();
@@ -311,7 +313,7 @@ public class UserService {
         } else if (fechaFin == null) {
             return null;
         }
-        List<Vehiculo> vehiculos = vehiculoFacade.findNotAveriado('F');
+        List<Vehiculo> vehiculos = vehiculoFacade.findAll();
         if (vehiculos == null) {
             return null;
         }
@@ -328,6 +330,7 @@ public class UserService {
                 disponibles.add(v);
             }
         }
+        System.out.println(Arrays.toString(licencias));
         List<Vehiculo> result = new ArrayList<Vehiculo>();
         List<String> idModelos;
         List<String> licenciasList = Arrays.asList(licencias);
@@ -340,6 +343,7 @@ public class UserService {
                 }
             }
         }
+                System.out.println(Arrays.toString(result.toArray()));
         
         return result;
     }
