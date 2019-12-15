@@ -15,10 +15,9 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
-import javax.ws.rs.PUT;
+import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import persistencia.AlquilerFacadeLocal;
@@ -34,40 +33,36 @@ public class UserResource {
 
     @Context
     private UriInfo context;
-    
+
     @EJB
     private AlquilerFacadeLocal alquilerFacade;
 
     @EJB
     private ReservaFacadeLocal reservaFacade;
 
-    private final String INCORRECTO = "Nif incorrecto";
-
+    private final String NIFINCORRECTO = "Nif incorrecto";
 
     /**
      * Creates a new instance of UserResource
      */
     public UserResource() {
     }
-    
-    
 
     @GET
     @Path("/{userNif}/reserva")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getReservasUsuario(@PathParam("userNif") String userNif) {
-
         List<Reserva> reservas = getReservas(userNif);
         System.out.println("Estoy cogiendo las reservas");
         if (reservas != null) {
             return Response.status(Response.Status.OK)
-                    .entity(reservas.toArray())
+                    .entity(reservas.toArray(new Reserva[0]))
                     .build();
 
         } else {
             return Response
                     .status(Response.Status.NOT_FOUND)
-                    .entity("{ \"message\": \"" + INCORRECTO + "\"}")
+                    .entity("{ \"message\": \"" + NIFINCORRECTO + "\"}")
                     .build();
         }
     }
