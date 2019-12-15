@@ -29,8 +29,8 @@ public class ApplicationConfig extends Application {
      * If required, comment out calling this method in getClasses().
      */
     private void addRestResourceClasses(Set<Class<?>> resources) {
-        resources.add(backend.BackendResource.class);
         resources.add(backend.SessionService.class);
+        resources.add(backend.UserResource.class);
     }
     
 }
