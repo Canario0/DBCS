@@ -7,6 +7,9 @@ package backend;
 
 import dominio.Alquiler;
 import dominio.Reserva;
+import dominio.Vehiculo;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -21,11 +24,12 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
-import javax.ws.rs.core.GenericEntity;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import persistencia.AlquilerFacadeLocal;
+import persistencia.LicenciaspormodeloFacadeLocal;
 import persistencia.ReservaFacadeLocal;
+import persistencia.VehiculoFacadeLocal;
 
 /**
  * REST Web Service
@@ -39,12 +43,14 @@ public class UserService {
     private UriInfo context;
 
     @EJB
-    private AlquilerFacadeLocal alquilerFacade;
-
-    @EJB
     private ReservaFacadeLocal reservaFacade;
+    @EJB
+    private VehiculoFacadeLocal vehiculoFacade;
+    @EJB
+    private LicenciaspormodeloFacadeLocal licenciaspormodeloFacade;
 
     private final String NIFINCORRECTO = "Nif incorrecto";
+    private final String RESERVANOENCONTRADA = "Reserva no encontrada";
     private final String RESERVACREADA = "Reserva creada correctamente";
     private final String RESERVAERROR = "Ha habido un error al crear la reserva";
     private final String RESERVAACTUALIZADA = "Reserva actualizada correctamente";
@@ -74,6 +80,32 @@ public class UserService {
                     .entity("{ \"message\": \"" + NIFINCORRECTO + "\"}")
                     .build();
         }
+    }
+    
+    @GET
+    @Path("/{userNif}/reserva/{idReserva}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getReserva(@PathParam("userNif") String userNif, @PathParam("idReserva") String idReserva) {
+        Reserva r = reservaFacade.find(Integer.parseInt(idReserva));
+        System.out.println("ESTOY AQUI");
+        if (r != null) {
+            return Response.status(Response.Status.OK)
+                    .entity(r)
+                    .build();
+
+        } else {
+            return Response
+                    .status(Response.Status.NOT_FOUND)
+                    .entity("{ \"message\": \"" + RESERVANOENCONTRADA + "\"}")
+                    .build();
+        }
+    }
+
+    @GET
+    @Path("/{userNif}/car")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getCars(@PathParam("userNif") String userNifﬁ, @QueryParam("fechaInicio") String fechaInicio, @QueryParam("fechaFin") String fechaFin) {
+        return null;
     }
 
     @POST
@@ -109,7 +141,7 @@ public class UserService {
                     .status(Response.Status.OK)
                     .entity("{ \"message\": \"" + RESERVAACTUALIZADA + "\"}")
                     .build();
-        }else{
+        } else {
             return Response
                     .status(Response.Status.FORBIDDEN)
                     .entity("{ \"message\": \"" + RESERVAACTUALIZADAERROR + "\"}")
@@ -126,7 +158,7 @@ public class UserService {
                     .status(Response.Status.OK)
                     .entity("{ \"message\": \"" + RESERVABORRADA + "\"}")
                     .build();
-        }else{
+        } else {
             return Response
                     .status(Response.Status.FORBIDDEN)
                     .entity("{ \"message\": \"" + RESERVABORRADAERROR + "\"}")
@@ -174,9 +206,9 @@ public class UserService {
         } else if (idReserva <= 0) {
             return false;
         }
-       
+
         Reserva r = reservaFacade.find(idReserva);
-        if(r == null){
+        if (r == null) {
             return false;
         }
         Reserva edited = new Reserva();
@@ -195,14 +227,14 @@ public class UserService {
         return true;
 
     }
-    
+
     public boolean removeReserva(int idReserva) {
         if (idReserva <= 0) {
             return false;
         }
 
         Reserva r = reservaFacade.find(idReserva);
-        if(r == null){
+        if (r == null) {
             return false;
         }
         reservaFacade.remove(r);
@@ -213,8 +245,57 @@ public class UserService {
         return true;
 
     }
-    
+
     private Date getToday() {
         return Calendar.getInstance().getTime();
+    }
+
+    public List<Vehiculo> getVehiculos(String[] licencias, Date fechaIni, Date fechaFin) {
+        if (licencias == null) {
+            return null;
+        } else if (fechaIni == null) {
+            return null;
+        } else if (fechaFin == null) {
+            return null;
+        }
+        List<Vehiculo> vehiculos = vehiculoFacade.findNotAveriado('F');
+        if (vehiculos == null) {
+            return null;
+        }
+        String[] reservados = getReservados(fechaIni, fechaFin);
+        if (reservados == null) {
+            return null;
+        }
+        String matricula = null;
+        List<Vehiculo> disponibles = new ArrayList<Vehiculo>();
+        List<String> reservadosList = Arrays.asList(reservados);
+        for (Vehiculo v : vehiculos) {
+            matricula = v.getMatricula();
+            if (!reservadosList.contains(matricula)) {
+                disponibles.add(v);
+            }
+        }
+        List<Vehiculo> result = new ArrayList<Vehiculo>();
+        List<String> idModelos;
+        List<String> licenciasList = Arrays.asList(licencias);
+        for (Vehiculo v : disponibles) {
+            idModelos = licenciaspormodeloFacade.findByIdModelo(v.getIdmodelo());
+            for (String m : idModelos) {
+                if (licenciasList.contains(m)) {
+                    result.add(v);
+                    break;
+                }
+            }
+        }
+        return result;
+    }
+
+    public String[] getReservados(Date fechaInicial, Date fechaFinal) {
+        if (fechaInicial == null) {
+            return null;
+        } else if (fechaFinal == null) {
+            return null;
+        }
+        return reservaFacade.findInDate(fechaInicial, fechaFinal);
     }
 }
