@@ -11,11 +11,13 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
@@ -41,6 +43,8 @@ public class UserResource {
     private ReservaFacadeLocal reservaFacade;
 
     private final String NIFINCORRECTO = "Nif incorrecto";
+    private final String RESERVACREADA = "Reserva creada correctamente";
+    private final String RESERVAERROR = "Ha habido un error al crear la reserva";
 
     /**
      * Creates a new instance of UserResource
@@ -64,6 +68,29 @@ public class UserResource {
                     .status(Response.Status.NOT_FOUND)
                     .entity("{ \"message\": \"" + NIFINCORRECTO + "\"}")
                     .build();
+        }
+    }
+
+    @POST
+    @Path("/{userNif}/reserva")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response createUserProfile(@PathParam("userNif") String userNif, Reserva reserva) {
+        //we can make use of UserProfile now
+        Date fechaInicio = reserva.getFechainicioalquiler();
+        Date fechaFin = reserva.getFechafinalquiler();
+        String matricula = reserva.getMatricula();
+        
+        if(addReserva(fechaInicio,fechaFin, userNif, matricula)){
+            return Response
+                    .status(Response.Status.CREATED)
+                    .entity("{ \"message\": \"" + RESERVACREADA + "\"}")
+                    .build();
+        }else{
+           return Response
+                    .status(Response.Status.UNAUTHORIZED)
+                    .entity("{ \"message\": \"" + RESERVAERROR + "\"}")
+                    .build(); 
         }
     }
 
