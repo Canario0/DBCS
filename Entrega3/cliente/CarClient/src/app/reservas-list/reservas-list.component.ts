@@ -29,7 +29,7 @@ export class ReservasListComponent implements OnInit {
   }
 
   editAction(id: number) {
-    console.log(`Me han editado ${id}`);
+    this.route.navigate(['/reserva', id]);
   }
 
   deleteAction(id: number) {
@@ -39,7 +39,7 @@ export class ReservasListComponent implements OnInit {
         this.snackbar.open(resp.message, 'close', { duration: 2000, verticalPosition: 'top' });
       },
       err => {
-        if (err.status === 401) {
+        if (err.status === 403) {
           this.snackbar.open(err.error.message, 'close', { duration: 2000, verticalPosition: 'top' });
         } else {
           console.log('Error al borrar reserva: ' + err.message);
@@ -50,7 +50,7 @@ export class ReservasListComponent implements OnInit {
   }
 
   getReservas() {
-    this.reservaService.getReserva(this.session.getNif()).subscribe(
+    this.reservaService.getReservas(this.session.getNif()).subscribe(
       resp => {
         this.reservas = resp;
       },

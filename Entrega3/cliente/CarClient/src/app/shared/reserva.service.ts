@@ -11,9 +11,19 @@ export class ReservaService {
   private static readonly baseURL = 'http://localhost:8080/DeployWebApplication/webresources/';
   constructor(private http: HttpClient) { }
 
-  getReserva(nif: string): Observable<Reserva[]> {
+  getReservas(nif: string): Observable<Reserva[]> {
     const url = ReservaService.baseURL + `user/${nif}/reserva`;
     return this.http.get<Reserva[]>(url);
+  }
+
+  getReserva(nif: string, id: string): Observable<Reserva> {
+    const url = ReservaService.baseURL + `user/${nif}/reserva/${id}`;
+    return this.http.get<Reserva>(url);
+  }
+
+  putReserva(nif: string, reserva: Reserva): Observable<DeleteMessage> {
+    const url = ReservaService.baseURL + `user/${nif}/reserva/${reserva.idreserva}`;
+    return this.http.put<DeleteMessage>(url, reserva);
   }
 
   deleteReserva(nif: string, id: number): Observable<DeleteMessage> {
