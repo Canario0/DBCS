@@ -33,7 +33,7 @@ import persistencia.ReservaFacadeLocal;
  * @author ivan
  */
 @Path("/user")
-public class UserResource {
+public class UserService {
 
     @Context
     private UriInfo context;
@@ -47,11 +47,13 @@ public class UserResource {
     private final String NIFINCORRECTO = "Nif incorrecto";
     private final String RESERVACREADA = "Reserva creada correctamente";
     private final String RESERVAERROR = "Ha habido un error al crear la reserva";
+    private final String RESERVAACTUALIZADA = "Reserva actualizada correctamente";
+    private final String RESERVAACTUALIZADAERROR = "Ha habido un error al actualizar la reserva";
 
     /**
-     * Creates a new instance of UserResource
+     * Creates a new instance of UserService
      */
-    public UserResource() {
+    public UserService() {
     }
 
     @GET
@@ -59,7 +61,6 @@ public class UserResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getReservasUsuario(@PathParam("userNif") String userNif) {
         List<Reserva> reservas = getReservas(userNif);
-        System.out.println("Estoy cogiendo las reservas");
         if (reservas != null) {
             return Response.status(Response.Status.OK)
                     .entity(reservas.toArray(new Reserva[0]))
@@ -101,7 +102,17 @@ public class UserResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response putFechaReserva(@PathParam("userNif") String userNif, @PathParam("idReserva") String idReserva, Reserva reserva) {
-        return null;
+        if (updateReserva(Integer.parseInt(idReserva), reserva.getFechainicioalquiler(), reserva.getFechafinalquiler())) {
+            return Response
+                    .status(Response.Status.OK)
+                    .entity("{ \"message\": \"" + RESERVAACTUALIZADA + "\"}")
+                    .build();
+        }else{
+            return Response
+                    .status(Response.Status.FORBIDDEN)
+                    .entity("{ \"message\": \"" + RESERVAACTUALIZADAERROR + "\"}")
+                    .build();
+        }
     }
 
     @DELETE
@@ -141,6 +152,33 @@ public class UserResource {
             return null;
         }
         return reservaFacade.findByNif(nif);
+    }
+
+    public boolean updateReserva(int idReserva, Date fechaInicioAlquiler, Date fechaFinAlquiler) {
+        if (fechaInicioAlquiler == null) {
+            return false;
+        } else if (fechaFinAlquiler == null) {
+            return false;
+        } else if (idReserva <= 0) {
+            return false;
+        }
+        Reserva edited = new Reserva();
+
+        Reserva r = reservaFacade.find(idReserva);
+        edited.setIdreserva(idReserva);
+        edited.setFechareserva(r.getFechareserva());
+        edited.setFechainicioalquiler(fechaInicioAlquiler);
+        edited.setFechafinalquiler(fechaFinAlquiler);
+        edited.setNif(r.getNif());
+        edited.setMatricula(r.getMatricula());
+        edited.setEjecutada(r.getEjecutada());
+
+        reservaFacade.edit(edited);
+        if (reservaFacade.find(r.getIdreserva()) == null) {
+            return false;
+        }
+        return true;
+
     }
 
     public boolean addAlquiler(int reserva, float km, String idEmpleado) {
