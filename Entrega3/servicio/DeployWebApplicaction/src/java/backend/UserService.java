@@ -6,14 +6,25 @@
 package backend;
 
 import dominio.Alquiler;
+import dominio.Cliente;
+import dominio.Modelo;
 import dominio.Reserva;
+import dominio.Tipocarnet;
 import dominio.Vehiculo;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.core.Context;
@@ -27,7 +38,10 @@ import javax.ws.rs.Path;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import persistencia.ClienteFacadeLocal;
 import persistencia.LicenciaspormodeloFacadeLocal;
+import persistencia.ModeloFacade;
+import persistencia.ModeloFacadeLocal;
 import persistencia.ReservaFacadeLocal;
 import persistencia.VehiculoFacadeLocal;
 
@@ -38,6 +52,7 @@ import persistencia.VehiculoFacadeLocal;
  */
 @Path("/user")
 public class UserService {
+    
 
     @Context
     private UriInfo context;
@@ -48,6 +63,10 @@ public class UserService {
     private VehiculoFacadeLocal vehiculoFacade;
     @EJB
     private LicenciaspormodeloFacadeLocal licenciaspormodeloFacade;
+    @EJB
+    private ModeloFacadeLocal modeloFacade;
+    @EJB
+    private ClienteFacadeLocal clienteFacade;
 
     private final String NIFINCORRECTO = "Nif incorrecto";
     private final String RESERVANOENCONTRADA = "Reserva no encontrada";
@@ -81,13 +100,12 @@ public class UserService {
                     .build();
         }
     }
-    
+
     @GET
     @Path("/{userNif}/reserva/{idReserva}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getReserva(@PathParam("userNif") String userNif, @PathParam("idReserva") String idReserva) {
         Reserva r = reservaFacade.find(Integer.parseInt(idReserva));
-        System.out.println("ESTOY AQUI");
         if (r != null) {
             return Response.status(Response.Status.OK)
                     .entity(r)
@@ -104,7 +122,29 @@ public class UserService {
     @GET
     @Path("/{userNif}/car")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getCars(@PathParam("userNif") String userNifﬁ, @QueryParam("fechaInicio") String fechaInicio, @QueryParam("fechaFin") String fechaFin) {
+    public Response getCars(@PathParam("userNif") String userNif, @QueryParam("fechaInicio") String fechaInicio, @QueryParam("fechaFin") String fechaFin) {
+        Date inicio = null;
+        Date fin = null;
+        HashMap<String, String> map = null;
+        try {
+            inicio = new SimpleDateFormat("yyyy-mm-dd").parse(fechaInicio);
+            fin = new SimpleDateFormat("yyyy-mm-dd").parse(fechaFin);
+            map = (HashMap<String, String>) getInfoVehiculos(getVehiculos(getLicencias(userNif), inicio, fin));
+            
+            if (map != null) {
+                return Response.status(Response.Status.OK)
+                        .entity(map.toString())
+                        .build();
+
+            } else {
+                return Response
+                        .status(Response.Status.NOT_FOUND)
+                        .entity("{ \"message\": \"" + RESERVANOENCONTRADA + "\"}")
+                        .build();
+            }
+        } catch (ParseException ex) {
+            Logger.getLogger(UserService.class.getName()).log(Level.SEVERE, null, ex);
+        }
         return null;
     }
 
@@ -250,6 +290,19 @@ public class UserService {
         return Calendar.getInstance().getTime();
     }
 
+    public Map<String, String> getInfoVehiculos(List<Vehiculo> vehiculos) {
+        List<Modelo> m = new ArrayList<Modelo>();
+        for (Vehiculo v : vehiculos) {
+            m.add(modeloFacade.find(v.getIdmodelo()));
+        }
+
+        HashMap<String, String> map = new HashMap<String, String>();
+        for (int i = 0; i < m.size(); i++) {
+            map.put(vehiculos.get(i).getMatricula(), m.get(i).getNombre());
+        }
+        return map;
+    }
+
     public List<Vehiculo> getVehiculos(String[] licencias, Date fechaIni, Date fechaFin) {
         if (licencias == null) {
             return null;
@@ -290,7 +343,7 @@ public class UserService {
         return result;
     }
 
-    public String[] getReservados(Date fechaInicial, Date fechaFinal) {
+    private String[] getReservados(Date fechaInicial, Date fechaFinal) {
         if (fechaInicial == null) {
             return null;
         } else if (fechaFinal == null) {
@@ -298,4 +351,28 @@ public class UserService {
         }
         return reservaFacade.findInDate(fechaInicial, fechaFinal);
     }
+
+    public String[] getLicencias(String NIF) {
+        if (NIF == null) {
+            return null;
+        }
+        Cliente cliente = clienteFacade.find(NIF);
+        if (cliente == null) {
+            return null;
+        }
+        // Tipocarnet::getTipo es lo mismo que hacer x -> x.getTypo y String[]::new es lo mismo que hacer size -> new String[size]
+        //return cliente.getTipocarnetList().stream().map(Tipocarnet::getTipo).toArray(String[]::new);
+        // Este fragmento está comentado porque produce conflictos con el servidor embebido de testing
+        List<Tipocarnet> tipoCarnets = cliente.getTipocarnetList();
+        if (tipoCarnets == null) {
+            return null;
+        }
+        String[] licencias = new String[tipoCarnets.size()];
+        for (int i = 0; i < tipoCarnets.size(); i++) {
+            licencias[i] = tipoCarnets.get(i).getTipo();
+        }
+        return licencias;
+    }
+
+    
 }
