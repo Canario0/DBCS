@@ -1,8 +1,8 @@
 export interface Reserva {
-  id: number;
-  fechaReserva: Date;
-  fechaInicioAlquiler: Date;
-  fechaFinAlquiler: Date;
+  idreserva: number;
+  fechareserva: Date;
+  fechainicioalquiler: Date;
+  fechafinalquiler: Date;
   ejecutada: string;
   nif: string;
   matricula: string;

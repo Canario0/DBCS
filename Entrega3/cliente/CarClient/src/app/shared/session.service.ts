@@ -11,8 +11,8 @@ export class SessionService {
     this.isLogged = false;
   }
 
-  setLoggedIn(login: LoginMessage) {
-    this.nif = login.nif;
+  setLoggedIn(nif: string) {
+    this.nif = nif;
     this.isLogged = true;
   }
 

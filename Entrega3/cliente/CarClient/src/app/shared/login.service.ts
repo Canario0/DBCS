@@ -11,14 +11,12 @@ export class LoginService {
 
   constructor(private http: HttpClient) { }
 
-  getLogin(user: string, password: string): Observable<HttpResponse<LoginMessage>> {
+  getLogin(user: string, password: string): Observable<LoginMessage> {
     const url = LoginService.baseURL + '/' + user;
     return this.http.get<LoginMessage>(url, {
       headers: new HttpHeaders({
         Authorization: password
-      }),
-      observe: 'response',
-      responseType: 'text' as 'json'
+      })
     });
   }
 }

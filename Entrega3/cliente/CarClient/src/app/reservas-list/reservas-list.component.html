@@ -9,22 +9,22 @@
     <!-- Id Column -->
     <ng-container matColumnDef="id">
       <th mat-header-cell *matHeaderCellDef> Id </th>
-      <td mat-cell *matCellDef="let reserva"> {{reserva.id}} </td>
+      <td mat-cell *matCellDef="let reserva"> {{reserva.idreserva}} </td>
     </ng-container>
     <!-- fechaReserva Column -->
     <ng-container matColumnDef="fechaReserva">
       <th mat-header-cell *matHeaderCellDef> Fecha Reserva </th>
-      <td mat-cell *matCellDef="let reserva"> {{(reserva.fechaReserva| date:'d-M-yy')}} </td>
+      <td mat-cell *matCellDef="let reserva"> {{(reserva.fechareserva|date:'d-M-yy')}} </td>
     </ng-container>
     <!-- fechaInicioAlquiler Column -->
     <ng-container matColumnDef="fechaInicioAlquiler">
       <th mat-header-cell *matHeaderCellDef> Inicio Alquiler </th>
-      <td mat-cell *matCellDef="let reserva"> {{(reserva.fechaInicioAlquiler|date:'d-M-yy')}} </td>
+      <td mat-cell *matCellDef="let reserva"> {{(reserva.fechainicioalquiler|date:'d-M-yy')}} </td>
     </ng-container>
     <!-- fechaFinAlquiler Column -->
     <ng-container matColumnDef="fechaFinAlquiler">
       <th mat-header-cell *matHeaderCellDef> Fin Alquiler </th>
-      <td mat-cell *matCellDef="let reserva"> {{(reserva.fechaFinAlquiler | date:'d-M-yy')}} </td>
+      <td mat-cell *matCellDef="let reserva"> {{(reserva.fechafinalquiler|date:'d-M-yy')}} </td>
     </ng-container>
     <!-- ejecutada Column -->
     <ng-container matColumnDef="ejecutada">
@@ -44,8 +44,10 @@
 
     <ng-container matColumnDef="actions">
       <th mat-header-cell *matHeaderCellDef> Aciones </th>
-      <td mat-cell *matCellDef="let reserva">  <button mat-raised-button color="primary" style="margin-right: 0.5em;" (click)="editAction(reserva.id)">Editar</button>
-        <button mat-raised-button color="warn" style="margin-left: 0.5em;" (click)="deleteAction(reserva.id)">Borrar</button></td>
+      <td mat-cell *matCellDef="let reserva"> <button mat-raised-button color="primary" style="margin-right: 0.5em;"
+          (click)="editAction(reserva.id)">Editar</button>
+        <button mat-raised-button color="warn" style="margin-left: 0.5em;"
+          (click)="deleteAction(reserva.id)">Borrar</button></td>
     </ng-container>
     <tr mat-header-row *matHeaderRowDef="displayedCols"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedCols;"></tr>
