@@ -1,8 +1,12 @@
 package backend;
 
+import dominio.Alquiler;
 import dominio.Cliente;
+import dominio.Reserva;
 import dominio.Tipocarnet;
 import dominio.Usuario;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ws.rs.core.Context;
@@ -11,10 +15,13 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import persistencia.AlquilerFacadeLocal;
 import persistencia.ClienteFacadeLocal;
+import persistencia.ReservaFacadeLocal;
 import persistencia.UsuarioFacadeLocal;
 
 /**
@@ -29,6 +36,13 @@ public class SessionService {
     private UsuarioFacadeLocal usuarioFacade;
     @EJB
     private ClienteFacadeLocal clienteFacade;
+    @EJB
+    private AlquilerFacadeLocal alquilerFacade;
+
+    @EJB
+    private ReservaFacadeLocal reservaFacade;
+
+    
     @Context
     private UriInfo context;
 
