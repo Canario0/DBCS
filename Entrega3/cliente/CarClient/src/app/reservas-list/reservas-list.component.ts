@@ -25,6 +25,31 @@ export class ReservasListComponent implements OnInit {
     if (!this.session.checkLoggedIn()) {
       this.route.navigate(['/login']);
     }
+    this.getReservas();
+  }
+
+  editAction(id: number) {
+    console.log(`Me han editado ${id}`);
+  }
+
+  deleteAction(id: number) {
+    this.reservaService.deleteReserva(this.session.getNif(), id).subscribe(
+      resp => {
+        this.getReservas();
+        this.snackbar.open(resp.message, 'close', { duration: 2000, verticalPosition: 'top' });
+      },
+      err => {
+        if (err.status === 401) {
+          this.snackbar.open(err.error.message, 'close', { duration: 2000, verticalPosition: 'top' });
+        } else {
+          console.log('Error al borrar reserva: ' + err.message);
+          throw err;
+        }
+      }
+    );
+  }
+
+  getReservas() {
     this.reservaService.getReserva(this.session.getNif()).subscribe(
       resp => {
         this.reservas = resp;
@@ -33,19 +58,11 @@ export class ReservasListComponent implements OnInit {
         if (err.status === 404) {
           this.snackbar.open(err.error.message, 'close', { duration: 2000, verticalPosition: 'top' });
         } else {
-          console.log('Error al iniciar sesión: ' + err.message);
+          console.log('Error al obtener las reservas: ' + err.message);
           throw err;
         }
       }
     );
-  }
-
-  editAction(id: number) {
-    console.log(`Me han editado ${id}`);
-  }
-
-  deleteAction(id: number) {
-    console.log(`Me han borrado ${id}`);
   }
 
   newAction() {

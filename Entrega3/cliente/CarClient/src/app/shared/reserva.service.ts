@@ -1,3 +1,4 @@
+import { DeleteMessage } from './delete-message';
 import { Reserva } from './reserva';
 import { Observable } from 'rxjs';
 import { HttpClient, HttpResponse } from '@angular/common/http';
@@ -13,5 +14,10 @@ export class ReservaService {
   getReserva(nif: string): Observable<Reserva[]> {
     const url = ReservaService.baseURL + `user/${nif}/reserva`;
     return this.http.get<Reserva[]>(url);
+  }
+
+  deleteReserva(nif: string, id: number): Observable<DeleteMessage> {
+    const url = ReservaService.baseURL + `user/${nif}/reserva/${id}`;
+    return this.http.delete<DeleteMessage>(url);
   }
 }
