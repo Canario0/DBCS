@@ -15,7 +15,7 @@ import javax.persistence.PersistenceContext;
  * @author ivan
  */
 @Stateless
-public class ModeloFacade extends AbstractFacade<Modelo> {
+public class ModeloFacade extends AbstractFacade<Modelo> implements ModeloFacadeLocal {
     @PersistenceContext(unitName = "DeployWebApplicationPU")
     private EntityManager em;
 

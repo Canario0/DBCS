@@ -34,7 +34,7 @@ public class LicenciaspormodeloFacade extends AbstractFacade<Licenciaspormodelo>
     @Override
     public List<String> findByIdModelo(Modelo idModelo) {
         Query query = getEntityManager().createNamedQuery("Licenciaspormodelo.findLicenciaByModeloId");
-        query.setParameter("idmodelo",idModelo);
+        query.setParameter("idmodelo",idModelo.getIdmodelo());
         return query.getResultList();
     }
     

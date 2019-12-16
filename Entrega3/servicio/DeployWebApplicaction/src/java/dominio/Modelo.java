@@ -66,7 +66,7 @@ public class Modelo implements Serializable {
     @NotNull
     @Column(name = "GPS")
     private Character gps;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idmodelo")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "modelo")
     private Collection<Vehiculo> vehiculoCollection;
 
     public Modelo() {

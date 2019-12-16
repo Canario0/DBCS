@@ -30,7 +30,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Licenciaspormodelo.findAll", query = "SELECT l FROM Licenciaspormodelo l"),
     @NamedQuery(name = "Licenciaspormodelo.findById", query = "SELECT l FROM Licenciaspormodelo l WHERE l.id = :id"),
     @NamedQuery(name = "Licenciaspormodelo.findByIdmodelo", query = "SELECT l FROM Licenciaspormodelo l WHERE l.idmodelo = :idmodelo"),
-    @NamedQuery(name = "Licenciaspormodelo.findByTipo", query = "SELECT l FROM Licenciaspormodelo l WHERE l.tipo = :tipo")})
+    @NamedQuery(name = "Licenciaspormodelo.findByTipo", query = "SELECT l FROM Licenciaspormodelo l WHERE l.tipo = :tipo"),
+    @NamedQuery(name = "Licenciaspormodelo.findLicenciaByModeloId", query = "SELECT l.tipo FROM Licenciaspormodelo l WHERE l.idmodelo = :idmodelo")})
 public class Licenciaspormodelo implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
