@@ -56,8 +56,6 @@ public class UserService {
     @EJB
     private LicenciaspormodeloFacadeLocal licenciaspormodeloFacade;
     @EJB
-    private ModeloFacadeLocal modeloFacade;
-    @EJB
     private ClienteFacadeLocal clienteFacade;
 
     private final String NIFINCORRECTO = "Nif incorrecto";
@@ -75,6 +73,13 @@ public class UserService {
     public UserService() {
     }
 
+    /**
+     * Endpoint para obtener las reservas de un Usuario dado.
+     *
+     * @param userNif Nif del usuario del que queremos obtener las reservas.
+     * @return La lista de reservas del usuario si todo va bien y un 200, si no,
+     * un 404.
+     */
     @GET
     @Path("/{userNif}/reserva")
     @Produces(MediaType.APPLICATION_JSON)
@@ -93,6 +98,13 @@ public class UserService {
         }
     }
 
+    /**
+     * Endpoint para obtener una reserva concreta.
+     *
+     * @param userNif Nif del Usuario del que queremos consultar la Reserva.
+     * @param idReserva Identificador de la Reserva que queremos consultar.
+     * @return Si todo va bien, la Reserva junto con un 200. Si no, un 404.
+     */
     @GET
     @Path("/{userNif}/reserva/{idReserva}")
     @Produces(MediaType.APPLICATION_JSON)
@@ -111,6 +123,15 @@ public class UserService {
         }
     }
 
+    /**
+     * Endpoint para obtener los Vehiculos que puede reservar un Usuario entre
+     * un intervalo de fechas dado.
+     *
+     * @param userNif Usuario que quiere consultar los Vehiculos disponibles.
+     * @param fechaInicio Fecha de inicio del intervalo de consulta.
+     * @param fechaFin Fecha de fin del intervalo de consulta.
+     * @return Si todo va bien, la lista de Vehiculos disponibles con un 200. Si no, un 404.
+     */
     @GET
     @Path("/{userNif}/car")
     @Produces(MediaType.APPLICATION_JSON)
@@ -142,6 +163,12 @@ public class UserService {
         }
     }
 
+    /**
+     * Endpoint para introducir una Reserva nueva en la base de datos.
+     * @param userNif Usuario que quiere realizar la nueva Reserva.
+     * @param reserva Reserva con los datos seleccionados por el Usuario.
+     * @return Un 201 si todo va bien, si no, un 401.
+     */
     @POST
     @Path("/{userNif}/reserva")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -165,6 +192,13 @@ public class UserService {
         }
     }
 
+    /**
+     * Endpoint para modificar una Reserva de un Usuario.
+     * @param userNif Usuario que va a realizar la modificacion.
+     * @param idReserva Reserva sobre la que hacer la modificacion.
+     * @param reserva Reserva con los datos modificados.
+     * @return Si todo va bien un 200, si no, un 403.
+     */
     @PUT
     @Path("/{userNif}/reserva/{idReserva}")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -183,6 +217,12 @@ public class UserService {
         }
     }
 
+    /**
+     * Endpoint para Eliminar una Reserva de un Usuario dado.
+     * @param userNif Usuario que va a eliminar la Reserva.
+     * @param idReserva Identificador de la Reserva que se quiere eliminar.
+     * @return Si todo va bien, un 200, si no, un 403.
+     */
     @DELETE
     @Path("/{userNif}/reserva/{idReserva}")
     @Produces(MediaType.APPLICATION_JSON)
@@ -200,7 +240,7 @@ public class UserService {
         }
     }
 
-    public boolean addReserva(Date fechaInicio, Date fechaFin, String nif, String matricula) {
+    private boolean addReserva(Date fechaInicio, Date fechaFin, String nif, String matricula) {
         if (fechaInicio == null) {
             return false;
         } else if (fechaFin == null) {
@@ -225,14 +265,14 @@ public class UserService {
         return true;
     }
 
-    public List<Reserva> getReservas(String nif) {
+    private List<Reserva> getReservas(String nif) {
         if (nif == null || "".equals(nif.trim())) {
             return null;
         }
         return reservaFacade.findByNif(nif);
     }
 
-    public boolean updateReserva(int idReserva, Date fechaInicioAlquiler, Date fechaFinAlquiler) {
+    private boolean updateReserva(int idReserva, Date fechaInicioAlquiler, Date fechaFinAlquiler) {
         if (fechaInicioAlquiler == null) {
             return false;
         } else if (fechaFinAlquiler == null) {
@@ -262,7 +302,7 @@ public class UserService {
 
     }
 
-    public boolean removeReserva(int idReserva) {
+    private boolean removeReserva(int idReserva) {
         if (idReserva <= 0) {
             return false;
         }
@@ -284,7 +324,7 @@ public class UserService {
         return Calendar.getInstance().getTime();
     }
 
-    public List<Vehiculo> getVehiculos(String[] licencias, Date fechaIni, Date fechaFin) {
+    private List<Vehiculo> getVehiculos(String[] licencias, Date fechaIni, Date fechaFin) {
         if (licencias == null) {
             return null;
         } else if (fechaIni == null) {
@@ -336,7 +376,7 @@ public class UserService {
         return reservaFacade.findInDate(fechaInicial, fechaFinal);
     }
 
-    public String[] getLicencias(String NIF) {
+    private String[] getLicencias(String NIF) {
         if (NIF == null) {
             return null;
         }

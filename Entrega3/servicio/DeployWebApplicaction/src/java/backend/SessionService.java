@@ -36,11 +36,6 @@ public class SessionService {
     private UsuarioFacadeLocal usuarioFacade;
     @EJB
     private ClienteFacadeLocal clienteFacade;
-    @EJB
-    private AlquilerFacadeLocal alquilerFacade;
-
-    @EJB
-    private ReservaFacadeLocal reservaFacade;
 
     
     @Context
@@ -130,7 +125,7 @@ public class SessionService {
         return nif;
     }
 
-    public char bloqueado(String NIF) {
+    private char bloqueado(String NIF) {
         if (NIF == null) {
             return 'E';
         }
@@ -140,28 +135,6 @@ public class SessionService {
         }
         return cliente.getBloqueado();
 
-    }
-
-    public String[] getLicencias(String NIF) {
-        if (NIF == null) {
-            return null;
-        }
-        Cliente cliente = clienteFacade.find(NIF);
-        if (cliente == null) {
-            return null;
-        }
-        // Tipocarnet::getTipo es lo mismo que hacer x -> x.getTypo y String[]::new es lo mismo que hacer size -> new String[size]
-        //return cliente.getTipocarnetList().stream().map(Tipocarnet::getTipo).toArray(String[]::new);
-        // Este fragmento está comentado porque produce conflictos con el servidor embebido de testing
-        List<Tipocarnet> tipoCarnets = cliente.getTipocarnetList();
-        if (tipoCarnets == null) {
-            return null;
-        }
-        String[] licencias = new String[tipoCarnets.size()];
-        for (int i = 0; i < tipoCarnets.size(); i++) {
-            licencias[i] = tipoCarnets.get(i).getTipo();
-        }
-        return licencias;
     }
 
 }
