@@ -55,7 +55,7 @@ public class Vehiculo implements Serializable {
     private Character averiado;
     @JoinColumn(name = "IDMODELO", referencedColumnName = "IDMODELO")
     @ManyToOne(optional = false)
-    private Modelo idmodelo;
+    private Modelo modelo;
 
     public Vehiculo() {
     }
@@ -103,12 +103,12 @@ public class Vehiculo implements Serializable {
         this.averiado = averiado;
     }
 
-    public Modelo getIdmodelo() {
-        return idmodelo;
+    public Modelo getModelo() {
+        return modelo;
     }
 
-    public void setIdmodelo(Modelo idmodelo) {
-        this.idmodelo = idmodelo;
+    public void setModelo(Modelo modelo) {
+        this.modelo = modelo;
     }
 
     @Override

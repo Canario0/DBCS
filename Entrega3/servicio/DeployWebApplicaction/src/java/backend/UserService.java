@@ -5,9 +5,7 @@
  */
 package backend;
 
-import dominio.Alquiler;
 import dominio.Cliente;
-import dominio.Modelo;
 import dominio.Reserva;
 import dominio.Tipocarnet;
 import dominio.Vehiculo;
@@ -17,14 +15,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.core.Context;
@@ -40,7 +34,6 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import persistencia.ClienteFacadeLocal;
 import persistencia.LicenciaspormodeloFacadeLocal;
-import persistencia.ModeloFacade;
 import persistencia.ModeloFacadeLocal;
 import persistencia.ReservaFacadeLocal;
 import persistencia.VehiculoFacadeLocal;
@@ -52,7 +45,6 @@ import persistencia.VehiculoFacadeLocal;
  */
 @Path("/user")
 public class UserService {
-    
 
     @Context
     private UriInfo context;
@@ -125,15 +117,14 @@ public class UserService {
     public Response getCars(@PathParam("userNif") String userNif, @QueryParam("fechaInicio") String fechaInicio, @QueryParam("fechaFin") String fechaFin) {
         Date inicio = null;
         Date fin = null;
-        HashMap<String, String> map = null;
+        List<Vehiculo> vehiculos = null;
         try {
             inicio = new SimpleDateFormat("yyyy-mm-dd").parse(fechaInicio);
             fin = new SimpleDateFormat("yyyy-mm-dd").parse(fechaFin);
-            map = (HashMap<String, String>) getInfoVehiculos(getVehiculos(getLicencias(userNif), inicio, fin));
-            
-            if (map != null) {
+            vehiculos = getVehiculos(getLicencias(userNif), inicio, fin);
+            if (vehiculos != null) {
                 return Response.status(Response.Status.OK)
-                        .entity(map.toString())
+                        .entity(vehiculos.toArray(new Vehiculo[0]))
                         .build();
 
             } else {
@@ -144,8 +135,11 @@ public class UserService {
             }
         } catch (ParseException ex) {
             Logger.getLogger(UserService.class.getName()).log(Level.SEVERE, null, ex);
+            return Response
+                    .status(Response.Status.NOT_FOUND)
+                    .entity("{ \"message\": \"" + RESERVANOENCONTRADA + "\"}")
+                    .build();
         }
-        return null;
     }
 
     @POST
@@ -290,21 +284,6 @@ public class UserService {
         return Calendar.getInstance().getTime();
     }
 
-    public Map<String, String> getInfoVehiculos(List<Vehiculo> vehiculos) {
-        List<Modelo> m = new ArrayList<Modelo>();
-        // TODO: SOMOS LERDOS
-        System.out.println(vehiculos.get(0).toString());
-        for (Vehiculo v : vehiculos) {
-            m.add(modeloFacade.find(v.getIdmodelo().getIdmodelo()));
-        }
-
-        HashMap<String, String> map = new HashMap<String, String>();
-        for (int i = 0; i < m.size(); i++) {
-            map.put(vehiculos.get(i).getMatricula(), m.get(i).getNombre());
-        }
-        return map;
-    }
-
     public List<Vehiculo> getVehiculos(String[] licencias, Date fechaIni, Date fechaFin) {
         if (licencias == null) {
             return null;
@@ -335,7 +314,7 @@ public class UserService {
         List<String> idModelos;
         List<String> licenciasList = Arrays.asList(licencias);
         for (Vehiculo v : disponibles) {
-            idModelos = licenciaspormodeloFacade.findByIdModelo(v.getIdmodelo());
+            idModelos = licenciaspormodeloFacade.findByIdModelo(v.getModelo());
             for (String m : idModelos) {
                 if (licenciasList.contains(m)) {
                     result.add(v);
@@ -343,8 +322,8 @@ public class UserService {
                 }
             }
         }
-                System.out.println(Arrays.toString(result.toArray()));
-        
+        System.out.println(Arrays.toString(result.toArray()));
+
         return result;
     }
 
@@ -379,5 +358,4 @@ public class UserService {
         return licencias;
     }
 
-    
 }
