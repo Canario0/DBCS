@@ -1,1 +1,49 @@
-<p>nuevo-coche works!</p>
+<div class="main" style="flex-direction: column; ">
+  <mat-toolbar color="primary" style="align-items: center; justify-content: space-evenly;">
+    <span style="visibility: hidden;"></span>
+    <span>CarClient</span>
+    <span style="visibility: hidden;"></span>
+  </mat-toolbar>
+  <form (ngSubmit)="onSubmit()" #nuevaReservaForm="ngForm" style="display: flex; flex-direction: column; align-items: center; width: 100%; margin-top: 1em;">
+    <div style="display: flex; align-items: center; justify-content: space-evenly; width: 100%;">
+      <mat-form-field>
+        <input matInput [matDatepicker]="fechaIni" placeholder="Fecha Inicio" required name="fechainicioalquiler"
+          [(ngModel)]='reserva.fechainicioalquiler' (dateChange)='onDateFilled()'>
+        <mat-datepicker-toggle matSuffix [for]="fechaIni"></mat-datepicker-toggle>
+        <mat-datepicker #fechaIni></mat-datepicker>
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput [matDatepicker]="fechaFin" placeholder="Fecha Fin" name="fechafinalquiler"
+          (dateChange)='onDateFilled()' required [(ngModel)]='reserva.fechafinalquiler'>
+        <mat-datepicker-toggle matSuffix [for]="fechaFin"></mat-datepicker-toggle>
+        <mat-datepicker #fechaFin></mat-datepicker>
+      </mat-form-field>
+    </div>
+    <mat-radio-group style="display: flex; flex-direction: column; margin: 15px 0;"
+      *ngIf='this.reserva.fechainicioalquiler !== null && this.reserva.fechafinalquiler !== null' name="matricula"
+      [(ngModel)]="reserva.matricula">
+      <span style="margin-bottom: 1em; font-weight: bold;">Coches disponibles:</span>
+      <div style="display: flex; align-items: center;" *ngFor="let vehiculo of (vehiculos|async)">
+        <mat-radio-button class="example-radio-button" [value]="vehiculo.matricula">
+          {{vehiculo.matricula}}
+        </mat-radio-button>
+        <button mat-icon-button (click)="info(vehiculo)">
+          <mat-icon aria-hidden="false" style="font-size: 20px;">info</mat-icon>
+        </button>
+      </div>
+      <div style="display: flex; flex-direction: column; align-items: center; margin-top: 1em;" *ngIf="showInfo">
+        <span>Información de {{currentMat}}:</span><br><span>Descripción:
+          {{modelos.Trims[0].model_trim || 'null'}}</span><br><span>Tipo de coche:
+          {{modelos.Trims[0].model_body || 'null'}}</span><br><span>Consumo en ciudad:
+          {{modelos.Trims[0].model_lkm_city || 'null'}}</span><br><span>Consumo en carretera:
+          {{modelos.Trims[0].model_lkm_hwy || 'null'}}</span><br><span>Consumo mixto:
+          {{modelos.Trims[0].model_lkm_mixed || 'null'}}</span>
+      </div>
+    </mat-radio-group>
+    <div style="display: flex; direction: ltr;">
+      <button type="submit" mat-raised-button style="background: #8bc34a;">Crear</button>
+      <button (click)="cancelAction()" mat-raised-button color="warn" style="margin-left: 1em;">Cancelar</button>
+    </div>
+
+  </form>
+</div>
