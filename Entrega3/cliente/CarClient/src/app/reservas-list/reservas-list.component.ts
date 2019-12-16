@@ -68,4 +68,8 @@ export class ReservasListComponent implements OnInit {
   newAction() {
     this.route.navigate(['/nuevo']);
   }
+
+  logout(){
+    this.session.logout();
+  }
 }

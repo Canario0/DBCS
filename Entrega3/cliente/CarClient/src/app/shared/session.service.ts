@@ -1,4 +1,4 @@
-import { LoginMessage } from './login-message';
+import { Router } from '@angular/router';
 import { Injectable } from '@angular/core';
 
 @Injectable({
@@ -7,7 +7,7 @@ import { Injectable } from '@angular/core';
 export class SessionService {
   private isLogged: boolean;
   private nif: string;
-  constructor() {
+  constructor(private router: Router) {
     this.isLogged = false;
   }
 
@@ -27,5 +27,6 @@ export class SessionService {
   logout() {
     this.isLogged = false;
     this.nif = '';
+    this.router.navigate(['/login']);
   }
 }
