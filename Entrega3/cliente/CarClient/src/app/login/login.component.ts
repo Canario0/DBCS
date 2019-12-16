@@ -23,12 +23,12 @@ export class LoginComponent implements OnInit {
   onSubmit() {
     this.loginService.getLogin(this.login.user, this.login.password).subscribe(
       resp => {
-        this.session.setLoggedIn(resp.body);
+        this.session.setLoggedIn(resp.nif);
         this.route.navigate(['/reservas']);
       },
       err => {
         if (err.status === 401) {
-          this.snackbar.open(JSON.parse((err as HttpErrorResponse).error).message, 'close', { duration: 2000, verticalPosition: 'top' });
+          this.snackbar.open(err.error.message, 'close', { duration: 2000, verticalPosition: 'top' });
         } else {
           console.log('Error al iniciar sesión: ' + err.message);
           throw err;

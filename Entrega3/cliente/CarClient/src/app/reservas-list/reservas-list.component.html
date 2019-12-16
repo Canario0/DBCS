@@ -1,1 +1,56 @@
-<p>reservas-list works!</p>
+<div class="main" style="flex-direction: column; align-items: center;">
+  <mat-toolbar color="primary" style="align-items: center; justify-content: space-evenly;">
+    <button mat-flat-button (click)="newAction()">Añadir Reserva</button>
+    <button mat-flat-button (click)="logout()">Salir</button>
+    <span>CarClient</span>
+    <span style="visibility: hidden;"></span>
+    <span style="visibility: hidden;"></span>
+  </mat-toolbar>
+  <table mat-table [dataSource]="reservas" class="mat-elevation-z1" style="width: 80%;">
+    <!-- Id Column -->
+    <ng-container matColumnDef="id">
+      <th mat-header-cell *matHeaderCellDef> Id </th>
+      <td mat-cell *matCellDef="let reserva"> {{reserva.idreserva}} </td>
+    </ng-container>
+    <!-- fechaReserva Column -->
+    <ng-container matColumnDef="fechaReserva">
+      <th mat-header-cell *matHeaderCellDef> Fecha Reserva </th>
+      <td mat-cell *matCellDef="let reserva"> {{(reserva.fechareserva|date:'d-M-yy')}} </td>
+    </ng-container>
+    <!-- fechaInicioAlquiler Column -->
+    <ng-container matColumnDef="fechaInicioAlquiler">
+      <th mat-header-cell *matHeaderCellDef> Inicio Alquiler </th>
+      <td mat-cell *matCellDef="let reserva"> {{(reserva.fechainicioalquiler|date:'d-M-yy')}} </td>
+    </ng-container>
+    <!-- fechaFinAlquiler Column -->
+    <ng-container matColumnDef="fechaFinAlquiler">
+      <th mat-header-cell *matHeaderCellDef> Fin Alquiler </th>
+      <td mat-cell *matCellDef="let reserva"> {{(reserva.fechafinalquiler|date:'d-M-yy')}} </td>
+    </ng-container>
+    <!-- ejecutada Column -->
+    <ng-container matColumnDef="ejecutada">
+      <th mat-header-cell *matHeaderCellDef> Ejecutada </th>
+      <td mat-cell *matCellDef="let reserva"> {{reserva.ejecutada}} </td>
+    </ng-container>
+    <!-- nif Column -->
+    <ng-container matColumnDef="nif">
+      <th mat-header-cell *matHeaderCellDef> NIF </th>
+      <td mat-cell *matCellDef="let reserva"> {{reserva.nif}} </td>
+    </ng-container>
+    <!-- matricula Column -->
+    <ng-container matColumnDef="matricula">
+      <th mat-header-cell *matHeaderCellDef> Matricula </th>
+      <td mat-cell *matCellDef="let reserva"> {{reserva.matricula}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef> Aciones </th>
+      <td mat-cell *matCellDef="let reserva"> <button mat-raised-button color="primary" style="margin-right: 0.5em;"
+          (click)="editAction(reserva.idreserva)">Editar</button>
+        <button mat-raised-button color="warn" style="margin-left: 0.5em;"
+          (click)="deleteAction(reserva.idreserva)">Borrar</button></td>
+    </ng-container>
+    <tr mat-header-row *matHeaderRowDef="displayedCols"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedCols;"></tr>
+  </table>
+</div>

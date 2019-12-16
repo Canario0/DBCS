@@ -1,0 +1,43 @@
+<div class="main" style="flex-direction: column; ">
+  <mat-toolbar color="primary" style="align-items: center; justify-content: space-evenly;">
+    <span style="visibility: hidden;"></span>
+    <span>CarClient</span>
+    <span style="visibility: hidden;"></span>
+  </mat-toolbar>
+  <form (ngSubmit)="onSubmit()" #editarReservaForm="ngForm" style="margin-left: 1em; margin-top: 1em;">
+    <div style="display: flex; direction: ltr;">
+      <mat-form-field>
+        <input matInput placeholder="NIF" value="{{reserva.nif}}" disabled>
+      </mat-form-field>
+      <mat-form-field style="margin-left: 1em;">
+        <input matInput placeholder="Matricula" value="{{reserva.matricula}}" disabled>
+      </mat-form-field>
+    </div>
+    <div style="display: flex; direction: ltr;">
+      <mat-form-field>
+        <input matInput [matDatepicker]="fechaIni" placeholder="Fecha Inicio" required
+          [(ngModel)]="reserva.fechainicioalquiler" name="fechainicioalquiler">
+        <mat-datepicker-toggle matSuffix [for]="fechaIni"></mat-datepicker-toggle>
+        <mat-datepicker #fechaIni></mat-datepicker>
+      </mat-form-field>
+      <mat-form-field style="margin-left: 1em;">
+        <input matInput [matDatepicker]="fechaFin" placeholder="Fecha Fin" [(ngModel)]="reserva.fechafinalquiler"
+          name="fechafinalquiler" required>
+        <mat-datepicker-toggle matSuffix [for]="fechaFin"></mat-datepicker-toggle>
+        <mat-datepicker #fechaFin></mat-datepicker>
+      </mat-form-field>
+    </div>
+    <div style="display: flex; direction: ltr;">
+      <mat-form-field>
+        <input matInput placeholder="Ejecutada" value="{{reserva.ejecutada}}" disabled>
+      </mat-form-field>
+      <mat-form-field style="margin-left: 1em;">
+        <input matInput placeholder="Fecha Reserva" value="{{reserva.fechareserva| date:'d/M/yyyy'}}" disabled>
+      </mat-form-field>
+    </div>
+    <div style="display: flex; direction: ltr;">
+      <button type="submit" mat-raised-button style="background: #8bc34a;">Actualizar</button>
+      <button (click)="cancelAction()" mat-raised-button color="warn" style="margin-left: 1em;">Cancelar</button>
+    </div>
+  </form>
+</div>
