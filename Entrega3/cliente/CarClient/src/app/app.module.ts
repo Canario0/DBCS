@@ -10,13 +10,15 @@ import { MatCardModule, MatFormFieldModule, MatInputModule, MatButtonModule, Mat
 import { FormsModule } from '@angular/forms';
 import { ReservasListComponent } from './reservas-list/reservas-list.component';
 import { EditarReservaComponent } from './editar-reserva/editar-reserva.component';
+import { NuevoCocheComponent } from './nuevo-coche/nuevo-coche.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     ReservasListComponent,
-    EditarReservaComponent
+    EditarReservaComponent,
+    NuevoCocheComponent
   ],
   imports: [
     BrowserModule,

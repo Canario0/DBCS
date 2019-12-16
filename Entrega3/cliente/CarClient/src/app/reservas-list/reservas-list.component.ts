@@ -66,6 +66,6 @@ export class ReservasListComponent implements OnInit {
   }
 
   newAction() {
-    console.log('Añadir una nueva reserva');
+    this.route.navigate(['/nuevo']);
   }
 }
